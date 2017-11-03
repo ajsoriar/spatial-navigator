@@ -1,3 +1,24 @@
+'use strict';
+
+var appWindow = {};
+
+appWindow.resize = function(){
+    console.log("resize()!");
+    var height = document.body.clientHeight;
+    var width = document.body.clientWidth;
+    if ( (width/height) < (1200/800) ){
+        $("body").css("background-size","auto 100%");
+    } else {
+        $("body").css("background-size","100% auto");
+    }
+}
+
+//window.onload = appWindow.resize();
+
+window.addEventListener("resize", appWindow.resize);
+
+
+
 var nav = function(){
 
     var _n = {};
@@ -15,6 +36,14 @@ var nav = function(){
     var refreshListOfSelectableElements = function() {
 
       _n.listOfElements = document.getElementsByClassName('selectable');
+    };
+
+    var getBrowserWidth = function() {
+        return document.documentElement.clientWidth;
+    };
+
+    var getBrowserHeight = function() {
+        return document.documentElement.clientHeight;
     };
 
     var doNewSelection = function( num ) {
@@ -109,7 +138,7 @@ var nav = function(){
       console.log( "this.listOfDistances:", this.listOfDistances );
     };
 
-    function takeADecision(direction) { // direction [1,2,3 or 4]
+    function takeADecision( direction ) { // direction [1,2,3 or 4]
         // We´ve got:
         // 1) this.listOfDistances
         // 2) _n.current
@@ -172,8 +201,7 @@ var nav = function(){
               minY = target[i].distance_axis_y;
             }
           }
-
-        
+   
       }
 
       decisionIndex = selectedObj.id;
