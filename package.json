@@ -1,0 +1,11 @@
+{
+  "name": "navigation-experiment",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ajsoriar/navigation-experiment.git",
+  "author": "asr <ajsoriar@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "div-lines": "^1.0.1"
+  }
+}
