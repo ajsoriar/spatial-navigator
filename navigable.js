@@ -17,8 +17,6 @@ appWindow.resize = function(){
 
 window.addEventListener("resize", appWindow.resize);
 
-
-
 var nav = function(){
 
     var _n = {};
@@ -76,24 +74,24 @@ var nav = function(){
           $(".selectable").removeClass("is-selected");
           $( _n.current.el ).addClass("is-selected");
 
-          /*
 
           console.log("selected is: ", num );
 
           //draw lines
-          if (l1 != undefined ) l1.remove();
-          if (l2 != undefined ) l2.remove();
-          if (l3 != undefined ) l3.remove();
-          if (l4 != undefined ) l4.remove();
 
-          l1 = dljs.line(_n.current.cx, _n.current.cy, _n.current.cx+100, _n.current.cy-100,"#ff0000" );
-          l2 = dljs.line(_n.current.cx, _n.current.cy, _n.current.cx-100, _n.current.cy-100,"#ff0000" );
-          l3 = dljs.line(_n.current.cx, _n.current.cy, _n.current.cx-100, _n.current.cy+100,"#ff0000" );
-          l4 = dljs.line(_n.current.cx, _n.current.cy, _n.current.cx+100, _n.current.cy+100,"#ff0000" );
+          // if (l1 != undefined ) l1.remove();
+          // if (l2 != undefined ) l2.remove();
+          // if (l3 != undefined ) l3.remove();
+          // if (l4 != undefined ) l4.remove();
+          dljs.clear();
+
+          //dljs.linex(null,0  ,0  ,50 ,50 , 1, "#ff0000",0.8, true, 5, "#ff00ff");
+          l1 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+100, _n.current.cy-100, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+          l2 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-100, _n.current.cy-100, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+          l3 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-100, _n.current.cy+100, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+          l4 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+100, _n.current.cy+100, 1, "#ff0000",0.8, true, 5, "#ff00ff");
 
           // select one
-
-          */
 
         } else {
 
