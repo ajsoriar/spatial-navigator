@@ -35,9 +35,9 @@ var nav = function(){
 
     var checkInit = function() { // select one _nect if none is selected
         if( _n.current.el === null){
-          refreshListOfSelectableElements();
-          var rnd = Math.floor(Math.random() * _n.listOfElements.length ) + 0;
-          doNewSelection( rnd );
+            refreshListOfSelectableElements();
+            var rnd = Math.floor(Math.random() * _n.listOfElements.length ) + 0;
+            doNewSelection( rnd );
         };
     };
 
@@ -58,50 +58,46 @@ var nav = function(){
 
         if( num < 0) return
 
-        //_n.listOfElements = document.getElementsByClassName('selectable');
-
         console.log( _n.listOfElements.length +" selectable elements.");
 
         if ( _n.listOfElements.length > 0){
 
-          // paint numbers inside
+            // 1. Paint numbers inside navigble elements
 
-          for (var i = 0; i < _n.listOfElements.length; i++) {
-            _n.listOfElements[i].innerHTML = i;
-          }
+                for (var i = 0; i < _n.listOfElements.length; i++) _n.listOfElements[i].innerHTML = i;
 
-          // select one
-          _n.current.el = _n.listOfElements[ num ];
-          _n.current.domRect = _n.current.el.getBoundingClientRect();
-          _n.current.c = _n.current.domRect.right - _n.current.domRect.left;
-          _n.current.c = _n.current.domRect.bottom - _n.current.domRect.top;
-          _n.current.w = _n.current.domRect.right - _n.current.domRect.left;
-          _n.current.h = _n.current.domRect.bottom - _n.current.domRect.top;
-          _n.current.cx = _n.current.domRect.left + _n.current.w/2;
-          _n.current.cy = _n.current.domRect.top + _n.current.h/2;
+            // 2. Calculate stuff to graw visual guides
 
-          //$( _n.current.el ).addClass("is-selected");
-          $(".selectable").removeClass("is-selected");
-          $( _n.current.el ).addClass("is-selected");
+                _n.current.el = _n.listOfElements[ num ];
+                _n.current.domRect = _n.current.el.getBoundingClientRect();
+                _n.current.c = _n.current.domRect.right - _n.current.domRect.left;
+                _n.current.c = _n.current.domRect.bottom - _n.current.domRect.top;
+                _n.current.w = _n.current.domRect.right - _n.current.domRect.left;
+                _n.current.h = _n.current.domRect.bottom - _n.current.domRect.top;
+                _n.current.cx = _n.current.domRect.left + _n.current.w/2;
+                _n.current.cy = _n.current.domRect.top + _n.current.h/2;
 
+            // 3. Do the selection
 
-          console.log("selected is: ", num );
-          console.log("w:", bodyw );
-          console.log("h:", bodyh );
+                $(".selectable").removeClass("is-selected");
+                $( _n.current.el ).addClass("is-selected");
 
-          // Clear all previous guides
-          dljs.clear();
+                console.log("selected is: ", num );
 
-          //dljs.linex(null,0  ,0  ,50 ,50 , 1, "#ff0000",0.8, true, 5, "#ff00ff");
-          l1 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+2000, _n.current.cy-2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
-          l2 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-2000, _n.current.cy-2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
-          l3 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-2000, _n.current.cy+2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
-          l4 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+2000, _n.current.cy+2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+            // 4. Draw visual guide
 
-          l6 = dljs.linex( null, 0, _n.current.cy, bodyw, _n.current.cy, 1, "#00ff00",0.5, true, 5, "#ff00ff"); // x axis
-          l7 = dljs.linex( null, _n.current.cx, 0, _n.current.cx, bodyh, 1, "#00ff00",0.5, true, 5, "#ff00ff"); // y axis
+                dljs.clear(); // Clear all previous guides
 
-          // select one
+                //dljs.linex(null,0  ,0  ,50 ,50 , 1, "#ff0000",0.8, true, 5, "#ff00ff");
+                l1 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+2000, _n.current.cy-2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+                l2 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-2000, _n.current.cy-2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+                l3 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-2000, _n.current.cy+2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+                l4 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+2000, _n.current.cy+2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+
+                l6 = dljs.linex( null, 0, _n.current.cy, bodyw, _n.current.cy, 1, "#00ff00",0.5, true, 5, "#ff00ff"); // x axis
+                l7 = dljs.linex( null, _n.current.cx, 0, _n.current.cx, bodyh, 1, "#00ff00",0.5, true, 5, "#ff00ff"); // y axis
+
+            // end
 
         } else {
 
@@ -168,53 +164,50 @@ var nav = function(){
         // Remove some elements
         for (var i = 0; i < this.listOfDistances.length; i++) {
 
-          if (  direction === 1 ) { // up
+            if (  direction === 1 ) { // up
 
-            if ( this.listOfDistances[i].cy < _n.current.cy ) target.push( this.listOfDistances[i] );
-          }
-
-          if (  direction === 2 ) { // right
-            //console.log("i:", i );
-            //console.log("this.listOfDistances[i]:", this.listOfDistances[i] );
-            //console.log("this.listOfDistances[i].cx:", this.listOfDistances[i].cx );
-            //console.log("_n.current.cx:", _n.current.cx );
-            if ( this.listOfDistances[i].cx > _n.current.cx ) target.push( this.listOfDistances[i] );
-          }
-
-          if (  direction === 3 ) { // down
-
-            if ( this.listOfDistances[i].cy > _n.current.cy ) target.push( this.listOfDistances[i] );
-          }
-
-          if (  direction === 4 ) { // left
-
-            if ( this.listOfDistances[i].cx < _n.current.cx ) target.push( this.listOfDistances[i] );
-          }
-          
-      }
-
-      console.log(".b After filter 1, target: ", target );
-
-      // Get the closest to the axis, menor dy
-      var selectedObj = null;
-      var minY = null;
-
-      for (var i = 0; i < target.length; i++) {
-          if (i === 0){
-            selectedObj = target[0]; //.distance_axis_y;
-            minY = target[0].distance_axis_y;
-          } else {
-            if( target[i].distance_axis_y < minY ){
-              selectedObj = target[i]; //.distance_axis_y;
-              minY = target[i].distance_axis_y;
+              if ( this.listOfDistances[i].cy < _n.current.cy ) target.push( this.listOfDistances[i] );
             }
-          }
-   
-      }
 
-      decisionIndex = selectedObj.id;
+            if (  direction === 2 ) { // right
 
-      return decisionIndex;
+              if ( this.listOfDistances[i].cx > _n.current.cx ) target.push( this.listOfDistances[i] );
+            }
+
+            if (  direction === 3 ) { // down
+
+              if ( this.listOfDistances[i].cy > _n.current.cy ) target.push( this.listOfDistances[i] );
+            }
+
+            if (  direction === 4 ) { // left
+
+              if ( this.listOfDistances[i].cx < _n.current.cx ) target.push( this.listOfDistances[i] );
+            }
+            
+        }
+
+        console.log(".b After filter 1, target: ", target );
+
+        // Get the closest to the axis, menor dy
+        var selectedObj = null;
+        var minY = null;
+
+        for (var i = 0; i < target.length; i++) {
+            if (i === 0){
+              selectedObj = target[0]; //.distance_axis_y;
+              minY = target[0].distance_axis_y;
+            } else {
+              if( target[i].distance_axis_y < minY ){
+                selectedObj = target[i]; //.distance_axis_y;
+                minY = target[i].distance_axis_y;
+              }
+            }
+     
+        }
+
+        decisionIndex = selectedObj.id;
+
+        return decisionIndex; // Returns an element
     }
 
     function getDistance(){

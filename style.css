@@ -8,10 +8,10 @@ html {
 }
 
 body{
-    /*
-    background-image: url("./ground-block.svg");
+
+    background-image: url("./bg-005.gif");
     background-size: 100px;
-    */
+
     background-color: #111111;
     font-size: 12px;
     overflow: hidden;
@@ -109,6 +109,6 @@ li, ul{
 /* -------------------- */
 .selectable.is-selected {
   background-color: black;
-  box-shadow: 0 0 10px 7px gray;
+  box-shadow: 0 0 10px 7px #00ff40;
 }
 
