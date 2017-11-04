@@ -6,11 +6,18 @@ appWindow.resize = function(){
     console.log("resize()!");
     var height = document.body.clientHeight;
     var width = document.body.clientWidth;
+
+    /*
     if ( (width/height) < (1200/800) ){
         $("body").css("background-size","auto 100%");
     } else {
         $("body").css("background-size","100% auto");
     }
+    */
+
+    nav.setTotalWidth( width );
+    nav.setTotalHeight( height );
+
 }
 
 //window.onload = appWindow.resize();
@@ -18,6 +25,9 @@ appWindow.resize = function(){
 window.addEventListener("resize", appWindow.resize);
 
 var nav = function(){
+
+    var bodyw = 0; //document.body.clientWidth;
+    var bodyh = 0; //document.body.clientHeight;
 
     var _n = {};
 
@@ -76,20 +86,20 @@ var nav = function(){
 
 
           console.log("selected is: ", num );
+          console.log("w:", bodyw );
+          console.log("h:", bodyh );
 
-          //draw lines
-
-          // if (l1 != undefined ) l1.remove();
-          // if (l2 != undefined ) l2.remove();
-          // if (l3 != undefined ) l3.remove();
-          // if (l4 != undefined ) l4.remove();
+          // Clear all previous guides
           dljs.clear();
 
           //dljs.linex(null,0  ,0  ,50 ,50 , 1, "#ff0000",0.8, true, 5, "#ff00ff");
-          l1 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+100, _n.current.cy-100, 1, "#ff0000",0.8, true, 5, "#ff00ff");
-          l2 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-100, _n.current.cy-100, 1, "#ff0000",0.8, true, 5, "#ff00ff");
-          l3 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-100, _n.current.cy+100, 1, "#ff0000",0.8, true, 5, "#ff00ff");
-          l4 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+100, _n.current.cy+100, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+          l1 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+2000, _n.current.cy-2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+          l2 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-2000, _n.current.cy-2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+          l3 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-2000, _n.current.cy+2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+          l4 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+2000, _n.current.cy+2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+
+          l6 = dljs.linex( null, 0, _n.current.cy, bodyw, _n.current.cy, 1, "#00ff00",0.5, true, 5, "#ff00ff"); // x axis
+          l7 = dljs.linex( null, _n.current.cx, 0, _n.current.cx, bodyh, 1, "#00ff00",0.5, true, 5, "#ff00ff"); // y axis
 
           // select one
 
@@ -101,10 +111,10 @@ var nav = function(){
     };
 
     var substract = function (a,b){
-      var result = 0;
-      if ( a === b ) return 0;
-      if ( a > b ) return (a - b)
-      return (b - a)
+        var result = 0;
+        if ( a === b ) return 0;
+        if ( a > b ) return (a - b)
+        return (b - a)
     };
 
     var calculateAllDistances = function() {
@@ -265,12 +275,16 @@ var nav = function(){
       doNewSelection( selectedIndex );
     };
     _n.reset = function() {
-
       _n.current.el = null;
-
       checkInit();
       calculateAllDistances();
     };
+    _n.setTotalWidth = function( val ) {
+      bodyw = val;
+    };
+    _n.setTotalHeight = function( val ){
+      bodyh = val;
+    }
 
     return _n
 }
@@ -280,5 +294,6 @@ nav = nav();
 $( document ).ready(function() {
     console.log( "ready!" );
     nav.reset();
+    appWindow.resize();
 });
 
