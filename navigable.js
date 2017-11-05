@@ -18,7 +18,23 @@ appWindow.resize = function(){
     nav.setTotalWidth( width );
     nav.setTotalHeight( height );
 
-}
+};
+
+
+App = {};
+
+App.doStuff = function(){
+
+    nav.setDecissionFunction = function( that ){
+
+        console.log("- my decission function, that:", that );
+
+
+    }
+
+};
+
+
 
 //window.onload = appWindow.resize();
 
@@ -32,6 +48,8 @@ var nav = function(){
     var _n = {};
 
     var l1, l2, l3, l4;
+
+    this.decissionFunction = null;
 
     var checkInit = function() { // select one _nect if none is selected
         if( _n.current.el === null){
@@ -116,7 +134,7 @@ var nav = function(){
     var calculateAllDistances = function() {
 
       var cdr = _n.current.domRect;
-      this.listOfDistances = []; // clear
+      this.targetsData = []; // clear
       for (var i = 0; i < _n.listOfElements.length; i++) {
           // calculate
           var el = _n.listOfElements[i];
@@ -131,87 +149,141 @@ var nav = function(){
           p.h = domRect.bottom - domRect.top;
           p.cx = domRect.left + p.w/2;
           p.cy = domRect.top + p.h/2;
-          p.distance = getDistance();
+          p.distance = getDistance( _n.current.cx, _n.current.cy, p.cx, p.cy );
           p.angle = getAngle();
           p.distance_axis_x = substract( p.cx, _n.current.cx );
           p.distance_axis_y = substract( p.cy, _n.current.cy );
           p.slope = null;
-          this.listOfDistances.push( p );
+          this.targetsData.push( p );
       }
 
-      console.log( "this.listOfDistances:", this.listOfDistances );
+      console.log( "this.targetsData:", this.targetsData );
     };
 
     function takeADecision( direction ) { // direction [1,2,3 or 4]
         // We´ve got:
-        // 1) this.listOfDistances
+        // 1) this.targetsData
         // 2) _n.current
         // so ...
 
-        console.log(".");
-        console.log("Take a decision...");
-        console.log("this.listOfDistances", this.listOfDistances );
-        console.log("_n.current", _n.current );
-        console.log(".");
+        if ( this.decissionFunction != null ) {
 
-        var decisionIndex = -1; //-1
+            return this.decissionFunction( );
+        } else {
 
-        var target = [];
-        console.log(".a After filter 1, target: ", target );
+            console.log("decission function is null");
+        }
 
-        // FILTER 1
+        var FILTERS_GROUP = 2; //1;
 
-        // Remove some elements
-        for (var i = 0; i < this.listOfDistances.length; i++) {
+        // -----------------------
+        // --- FILTERS GROUP 1 ---
+        // -----------------------
+        
+        if ( FILTERS_GROUP === 1) {    
 
-            if (  direction === 1 ) { // up
+            console.log(".");
+            console.log("Take a decision...");
+            console.log("this.targetsData, all elements:", this.targetsData );
+            console.log("_n.current", _n.current );
+            console.log(".");
 
-              if ( this.listOfDistances[i].cy < _n.current.cy ) target.push( this.listOfDistances[i] );
+            var decisionIndex = -1; //-1
+
+            var target = [];
+            console.log(".a Before filter 1, target: ", target );
+
+            // FILTER 1
+
+            // Remove some elements
+            for (var i = 0; i < this.targetsData.length; i++) {
+
+                if (  direction === 1 ) { // up
+
+                  if ( this.targetsData[i].cy < _n.current.cy ) target.push( this.targetsData[i] );
+                }
+
+                if (  direction === 2 ) { // right
+
+                  if ( this.targetsData[i].cx > _n.current.cx ) target.push( this.targetsData[i] );
+                }
+
+                if (  direction === 3 ) { // down
+
+                  if ( this.targetsData[i].cy > _n.current.cy ) target.push( this.targetsData[i] );
+                }
+
+                if (  direction === 4 ) { // left
+
+                  if ( this.targetsData[i].cx < _n.current.cx ) target.push( this.targetsData[i] );
+                }
+                
             }
 
-            if (  direction === 2 ) { // right
+            console.log(".b After filter 1, target: ", target );
 
-              if ( this.listOfDistances[i].cx > _n.current.cx ) target.push( this.listOfDistances[i] );
+            // FILTER 2
+
+            // Get the closest to the axis
+            var selectedObj = null;
+            var minY = null;
+
+            for (var i = 0; i < target.length; i++) {
+                if (i === 0){
+                  selectedObj = target[0]; //.distance_axis_y;
+                  minY = target[0].distance_axis_y;
+                } else {
+                  if( target[i].distance_axis_y < minY ){
+                    selectedObj = target[i]; //.distance_axis_y;
+                    minY = target[i].distance_axis_y;
+                  }
+                }
+         
             }
 
-            if (  direction === 3 ) { // down
+            console.log(".c After filter 2, decision was taken: ", selectedObj );
 
-              if ( this.listOfDistances[i].cy > _n.current.cy ) target.push( this.listOfDistances[i] );
-            }
+            decisionIndex = selectedObj.id;
 
-            if (  direction === 4 ) { // left
+            console.log(".");
 
-              if ( this.listOfDistances[i].cx < _n.current.cx ) target.push( this.listOfDistances[i] );
-            }
+            return decisionIndex; // Returns an element
+        }
+
+        // -----------------------
+        // --- FILTERS GROUP 2 ---
+        // -----------------------
+
+        if ( FILTERS_GROUP === 2) {
+
+            var selectedObj = null;
+            var min_distance = null;
             
-        }
+            for (var i = 0; i < this.targetsData.length; i++) {
 
-        console.log(".b After filter 1, target: ", target );
+                if (i === 0){
+                    selectedObj = targetsData[0];
+                    min_distance = targetsData[0].distance;
+                } else {
 
-        // Get the closest to the axis, menor dy
-        var selectedObj = null;
-        var minY = null;
+                    if( targetsData[i].distance < min_distance && targetsData[i].distance != 0 ){
+                      selectedObj = targetsData[i];
+                      min_distance = targetsData[i].distance;
+                    }
 
-        for (var i = 0; i < target.length; i++) {
-            if (i === 0){
-              selectedObj = target[0]; //.distance_axis_y;
-              minY = target[0].distance_axis_y;
-            } else {
-              if( target[i].distance_axis_y < minY ){
-                selectedObj = target[i]; //.distance_axis_y;
-                minY = target[i].distance_axis_y;
-              }
+                }                
             }
-     
+
+            decisionIndex = selectedObj.id;
+
+            return decisionIndex; // Returns an element
+
         }
 
-        decisionIndex = selectedObj.id;
-
-        return decisionIndex; // Returns an element
     }
 
-    function getDistance(){
-      return 99.9
+    function getDistance(x1,y1,x2,y2){
+      return dljs.utils.getDistance(x1,y1,x2,y2) //99.9
     };
 
     function getAngle(){
@@ -237,7 +309,7 @@ var nav = function(){
     _n.cy = null; 
 
     _n.listOfElements = [];
-    _n.listOfDistances = [];
+    _n.targetsData = [];
 
     _n.init = function(){
       checkInit();
@@ -278,6 +350,9 @@ var nav = function(){
     _n.setTotalHeight = function( val ){
       bodyh = val;
     }
+    _n.setDecissionFunction = function( _func ){
+        this.decissionFunction = _func;
+    };
 
     return _n
 }
@@ -288,5 +363,6 @@ $( document ).ready(function() {
     console.log( "ready!" );
     nav.reset();
     appWindow.resize();
+    App.doStuff();
 });
 
