@@ -62,6 +62,14 @@ var nav = function(){
     var refreshListOfSelectableElements = function() {
 
       _n.listOfElements = document.getElementsByClassName('selectable');
+
+      // attach an id if navigable elements do not have one
+      for (var i = 0; i < _n.listOfElements.length; i++){
+        //_n.listOfElements[i].innerHTML = i;
+        if ( _n.listOfElements[i].id == ""){
+            _n.listOfElements[i].id = Date.now() + i;
+        }
+      } 
     };
 
     var getBrowserWidth = function() {
@@ -140,7 +148,7 @@ var nav = function(){
           var el = _n.listOfElements[i];
           var domRect = el.getBoundingClientRect();
           var p = {};
-          p.id = i;
+          p.id = el.id;
           p.x1 = domRect.left;
           p.y1 = domRect.top;
           p.x2 = domRect.right;
@@ -158,6 +166,7 @@ var nav = function(){
       }
 
       console.log( "this.targetsData:", this.targetsData );
+      console.log( "_n.listOfElements:", _n.listOfElements);
     };
 
     function takeADecision( direction ) { // direction [1,2,3 or 4]
@@ -169,12 +178,13 @@ var nav = function(){
         if ( this.decissionFunction != null ) {
 
             return this.decissionFunction( );
+
         } else {
 
             console.log("decission function is null");
         }
 
-        var FILTERS_GROUP = 2; //1;
+        var FILTERS_GROUP = 1; //1;
 
         // -----------------------
         // --- FILTERS GROUP 1 ---
@@ -200,22 +210,22 @@ var nav = function(){
 
                 if (  direction === 1 ) { // up
 
-                  if ( this.targetsData[i].cy < _n.current.cy ) target.push( this.targetsData[i] );
+                    if ( this.targetsData[i].cy < _n.current.cy ) target.push( this.targetsData[i] );
                 }
 
                 if (  direction === 2 ) { // right
 
-                  if ( this.targetsData[i].cx > _n.current.cx ) target.push( this.targetsData[i] );
+                    if ( this.targetsData[i].cx > _n.current.cx ) target.push( this.targetsData[i] );
                 }
 
                 if (  direction === 3 ) { // down
 
-                  if ( this.targetsData[i].cy > _n.current.cy ) target.push( this.targetsData[i] );
+                    if ( this.targetsData[i].cy > _n.current.cy ) target.push( this.targetsData[i] );
                 }
 
                 if (  direction === 4 ) { // left
 
-                  if ( this.targetsData[i].cx < _n.current.cx ) target.push( this.targetsData[i] );
+                    if ( this.targetsData[i].cx < _n.current.cx ) target.push( this.targetsData[i] );
                 }
                 
             }
@@ -225,20 +235,44 @@ var nav = function(){
             // FILTER 2
 
             // Get the closest to the axis
+
+            /*
             var selectedObj = null;
             var minY = null;
 
             for (var i = 0; i < target.length; i++) {
                 if (i === 0){
-                  selectedObj = target[0]; //.distance_axis_y;
-                  minY = target[0].distance_axis_y;
+                    selectedObj = target[0]; //.distance_axis_y;
+                    minY = target[0].distance_axis_y;
                 } else {
-                  if( target[i].distance_axis_y < minY ){
-                    selectedObj = target[i]; //.distance_axis_y;
-                    minY = target[i].distance_axis_y;
-                  }
+                    if( target[i].distance_axis_y < minY ){
+                        selectedObj = target[i]; //.distance_axis_y;
+                        minY = target[i].distance_axis_y;
+                    }
                 }
          
+            }
+
+            console.log(".c After filter 2, decision was taken: ", selectedObj );
+
+            */
+
+            // FILTER 3
+
+            // Get the lower distance value
+            var selectedObj = null;
+            var minDistance = null;
+
+            for (var i = 0; i < target.length; i++) {
+                if (i === 0){
+                    selectedObj = target[0];
+                    minDistance = target[0].distance_;
+                } else {
+                    if( target[i].distance_ < minDistance ){
+                        selectedObj = target[i];
+                        minDistance = target[i].distance_;
+                    }
+                }
             }
 
             console.log(".c After filter 2, decision was taken: ", selectedObj );
@@ -253,6 +287,8 @@ var nav = function(){
         // -----------------------
         // --- FILTERS GROUP 2 ---
         // -----------------------
+
+        console.log("this.targetsData:", this.targetsData );
 
         if ( FILTERS_GROUP === 2) {
 
@@ -283,11 +319,11 @@ var nav = function(){
     }
 
     function getDistance(x1,y1,x2,y2){
-      return dljs.utils.getDistance(x1,y1,x2,y2) //99.9
+        return dljs.utils.getDistance(x1,y1,x2,y2) //99.9
     };
 
     function getAngle(){
-      return 45
+        return 45
     };
 
     // ------------------------------------

@@ -6,6 +6,6 @@
   "author": "asr <ajsoriar@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "div-lines": "^1.0.1"
+    "div-lines": "^1.2.0"
   }
 }
