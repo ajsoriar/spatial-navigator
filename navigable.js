@@ -266,11 +266,11 @@ var nav = function(){
             for (var i = 0; i < target.length; i++) {
                 if (i === 0){
                     selectedObj = target[0];
-                    minDistance = target[0].distance_;
+                    minDistance = target[0].distance;
                 } else {
-                    if( target[i].distance_ < minDistance ){
+                    if( target[i].distance < minDistance ){
                         selectedObj = target[i];
-                        minDistance = target[i].distance_;
+                        minDistance = target[i].distance;
                     }
                 }
             }
@@ -326,6 +326,18 @@ var nav = function(){
         return 45
     };
 
+    var doAction = function() {
+
+    };
+
+    var previewAndShow = function( where) {
+        console.log("preview :", where );
+    };
+
+    var clearPreview = function( where) {
+        console.log("clear preview!");
+    };
+    
     // ------------------------------------
     // public
     // ------------------------------------
@@ -390,6 +402,14 @@ var nav = function(){
         this.decissionFunction = _func;
     };
 
+    _n.calculateDecissionPreviewAndShow = function( where ){
+        previewAndShow( where);
+    };
+
+    _n.clearPreview = function(  ){
+        clearPreview( );
+    };
+
     return _n
 }
 
@@ -400,5 +420,32 @@ $( document ).ready(function() {
     nav.reset();
     appWindow.resize();
     App.doStuff();
+
+    // atach events to demo buttons
+    $( "#btn-up" ).mouseenter(function() {
+        nav.calculateDecissionPreviewAndShow( 1);
+    });
+    $( "#btn-down" ).mouseenter(function() {
+        nav.calculateDecissionPreviewAndShow( 3);
+    });
+    $( "#btn-left" ).mouseenter(function() {
+        nav.calculateDecissionPreviewAndShow( 2);
+    });
+    $( "#btn-right" ).mouseenter(function() {
+        nav.calculateDecissionPreviewAndShow( 4);
+    });
+
+    $( "#btn-up" ).mouseleave(function() {
+        nav.clearPreview( 1);
+    });
+    $( "#btn-down" ).mouseleave(function() {
+        nav.clearPreview( 3);
+    });
+    $( "#btn-left" ).mouseleave(function() {
+        nav.clearPreview( 2);
+    });
+    $( "#btn-right" ).mouseleave(function() {
+        nav.clearPreview( 4);
+    });
 });
 
