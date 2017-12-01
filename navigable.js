@@ -17,9 +17,10 @@ appWindow.resize = function(){
 
     nav.setTotalWidth( width );
     nav.setTotalHeight( height );
-
+    nav.recalculateContainers();
 };
 
+window.addEventListener("resize", appWindow.resize);
 
 App = {};
 
@@ -28,22 +29,18 @@ App.doStuff = function(){
     nav.setDecissionFunction = function( that ){
 
         console.log("- my decission function, that:", that );
-
-
     }
-
 };
 
 
-
-//window.onload = appWindow.resize();
-
-window.addEventListener("resize", appWindow.resize);
+// Lib starts here
 
 var nav = function(){
 
     var bodyw = 0; //document.body.clientWidth;
     var bodyh = 0; //document.body.clientHeight;
+
+    var autopreviewAfterMove = false;
 
     var _n = {};
 
@@ -79,6 +76,7 @@ var nav = function(){
     var getBrowserHeight = function() {
         return document.documentElement.clientHeight;
     };
+    
 
     var doNewSelection = function( num ) {
 
@@ -92,7 +90,7 @@ var nav = function(){
 
                 for (var i = 0; i < _n.listOfElements.length; i++) _n.listOfElements[i].innerHTML = i;
 
-            // 2. Calculate stuff to graw visual guides
+            // 2. Calculate stuff to draw visual guides
 
                 _n.current.el = _n.listOfElements[ num ];
                 _n.current.domRect = _n.current.el.getBoundingClientRect();
@@ -110,7 +108,7 @@ var nav = function(){
 
                 console.log("selected is: ", num );
 
-            // 4. Draw visual guide
+            // 4. Draw visual guide depending on the choosen filter filter
 
                 dljs.clear(); // Clear all previous guides
 
@@ -205,7 +203,7 @@ var nav = function(){
 
             // FILTER 1
 
-            // Remove some elements
+            // Remove some elements, half / half filter
             for (var i = 0; i < this.targetsData.length; i++) {
 
                 if (  direction === 1 ) { // up
@@ -410,11 +408,17 @@ var nav = function(){
         clearPreview( );
     };
 
+    _n.recalculateContainers = function() {
+        console.log("recalculateContainers()");
+    }
+
     return _n
 }
 
 nav = nav();
 
+
+// Move this to demo/index html file
 $( document ).ready(function() {
     console.log( "ready!" );
     nav.reset();
