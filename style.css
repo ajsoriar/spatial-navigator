@@ -30,12 +30,11 @@ body{
 }
 
 .block{
-  /* border: 1px solid black; */
-  /*display: block;*/
-  display: inline-block;
-  overflow: hidden;
-  position: absolute;
-  
+    /* border: 1px solid black; */
+    /*display: block;*/
+    display: inline-block;
+    overflow: hidden;
+    position: absolute;
 }
 
 .scn-0{

@@ -1,41 +1,12 @@
 // 'use strict';
 
-var appWindow = {};
-
-appWindow.resize = function(){
-    console.log("resize()!");
-    var height = document.body.clientHeight;
-    var width = document.body.clientWidth;
-
-    /*
-    if ( (width/height) < (1200/800) ){
-        $("body").css("background-size","auto 100%");
-    } else {
-        $("body").css("background-size","100% auto");
-    }
-    */
-
-    nav.setTotalWidth( width );
-    nav.setTotalHeight( height );
-    nav.recalculateContainers();
-};
-
-window.addEventListener("resize", appWindow.resize);
-
-App = {};
-
-App.doStuff = function(){
-
-    nav.setDecissionFunction = function( that ){
-
-        console.log("- my decission function, that:", that );
-    }
-};
 
 
 // Lib starts here
 
 var nav = function(){
+
+    //'use strict';
 
     var bodyw = 0; //document.body.clientWidth;
     var bodyh = 0; //document.body.clientHeight;
@@ -340,7 +311,6 @@ var nav = function(){
     // public
     // ------------------------------------
 
-
     _n.previousEl = null;
 
     //Selected element
@@ -358,44 +328,52 @@ var nav = function(){
     _n.targetsData = [];
 
     _n.init = function(){
-      checkInit();
-      calculateAllDistances();
+        checkInit();
+        calculateAllDistances();
     };
+
     _n.moveUp = function() {
-      checkInit();
-      calculateAllDistances();
-      var selectedIndex = takeADecision(1);
-      doNewSelection( selectedIndex );
+        checkInit();
+        calculateAllDistances();
+        var selectedIndex = takeADecision(1);
+        doNewSelection( selectedIndex );
     };
+
     _n.moveDown = function() {
-      checkInit();
-      calculateAllDistances();
-      var selectedIndex = takeADecision(3);
-      doNewSelection( selectedIndex );
+        checkInit();
+        calculateAllDistances();
+        var selectedIndex = takeADecision(3);
+        doNewSelection( selectedIndex );
     };
+
     _n.moveRight = function() {
-      checkInit();
-      calculateAllDistances();
-      var selectedIndex = takeADecision(2);
-      doNewSelection( selectedIndex );
+        checkInit();
+        calculateAllDistances();
+        var selectedIndex = takeADecision(2);
+        doNewSelection( selectedIndex );
     };
+
     _n.moveLeft = function() {
-      checkInit();
-      calculateAllDistances();
-      var selectedIndex = takeADecision(4);
-      doNewSelection( selectedIndex );
+        checkInit();
+        calculateAllDistances();
+        var selectedIndex = takeADecision(4);
+        doNewSelection( selectedIndex );
     };
+
     _n.reset = function() {
-      _n.current.el = null;
-      checkInit();
-      calculateAllDistances();
+        _n.current.el = null;
+        checkInit();
+        calculateAllDistances();
     };
+
     _n.setTotalWidth = function( val ) {
-      bodyw = val;
+        bodyw = val;
     };
+
     _n.setTotalHeight = function( val ){
-      bodyh = val;
+        bodyh = val;
     }
+
     _n.setDecissionFunction = function( _func ){
         this.decissionFunction = _func;
     };
@@ -410,46 +388,15 @@ var nav = function(){
 
     _n.recalculateContainers = function() {
         console.log("recalculateContainers()");
-    }
+    };
+
+    _n.applyRandomDecision = function() {
+        console.log("applyRandomDecision()");
+    };
 
     return _n
 }
 
 nav = nav();
 
-
-// Move this to demo/index html file
-$( document ).ready(function() {
-    console.log( "ready!" );
-    nav.reset();
-    appWindow.resize();
-    App.doStuff();
-
-    // atach events to demo buttons
-    $( "#btn-up" ).mouseenter(function() {
-        nav.calculateDecissionPreviewAndShow( 1);
-    });
-    $( "#btn-down" ).mouseenter(function() {
-        nav.calculateDecissionPreviewAndShow( 3);
-    });
-    $( "#btn-left" ).mouseenter(function() {
-        nav.calculateDecissionPreviewAndShow( 2);
-    });
-    $( "#btn-right" ).mouseenter(function() {
-        nav.calculateDecissionPreviewAndShow( 4);
-    });
-
-    $( "#btn-up" ).mouseleave(function() {
-        nav.clearPreview( 1);
-    });
-    $( "#btn-down" ).mouseleave(function() {
-        nav.clearPreview( 3);
-    });
-    $( "#btn-left" ).mouseleave(function() {
-        nav.clearPreview( 2);
-    });
-    $( "#btn-right" ).mouseleave(function() {
-        nav.clearPreview( 4);
-    });
-});
 
