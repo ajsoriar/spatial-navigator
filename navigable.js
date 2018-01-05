@@ -65,8 +65,8 @@ var nav = function(){
           // select one
           _n.current.el = _n.listOfElements[ num ];
           _n.current.domRect = _n.current.el.getBoundingClientRect();
-          _n.current.c = _n.current.domRect.right - _n.current.domRect.left;
-          _n.current.c = _n.current.domRect.bottom - _n.current.domRect.top;
+          //_n.current.c = _n.current.domRect.right - _n.current.domRect.left;
+          //_n.current.c = _n.current.domRect.bottom - _n.current.domRect.top;
           _n.current.w = _n.current.domRect.right - _n.current.domRect.left;
           _n.current.h = _n.current.domRect.bottom - _n.current.domRect.top;
           _n.current.cx = _n.current.domRect.left + _n.current.w/2;
