@@ -24,3 +24,21 @@ nav.filters = {
 
     }
 }
+
+nav.filters.groups = [
+    {
+        id: 1,
+        name: "directional",
+        aplicationOrder: ["HALF","CONSTRAINT","DISTANCE"]
+    },
+    {
+        id: 2,
+        name: "poligonal",
+        aplicationOrder: ["POLIGONAL","DISTANCE"]
+    },
+    {
+        id: 3,
+        name: "just-nearest",
+        aplicationOrder: ["DISTANCE"]
+    }
+] 
