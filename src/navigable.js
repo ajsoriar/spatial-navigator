@@ -362,63 +362,63 @@ var nav = function(){
 
     var automaticallyGetNextElement = function( arrOfElements, currentElement, movDirection, filterNameOrID ) {
 
-        // filterNameOrID === "RANDOM"
+        if ( !currentElement ) return null;
 
-        /*
-        var result = applyFilters({
-            "1":"HALF-HALF", 
-            "2":"CONSTRAINT", // constraint to boundaries
-            "3":"NEAREST"
-        })
-        */
-
-        if ( !currentElement ) return;
-
-        var filteredElements = [];
         var workArr = calculateDistances( arrOfElements, currentElement ); //  arrOfElements;
 
         // FILTER 1: Half / Half
-        for (var i = 0; i < workArr.length; i++) {
-            if (  direction == 1 || direction == "UP" )    if ( workArr[i].cy < currentElement.cy ) filteredElements.push( workArr[i] );
-            if (  direction == 2 || direction == "RIGHT" ) if ( workArr[i].cx > currentElement.cx ) filteredElements.push( workArr[i] );
-            if (  direction == 3 || direction == "DOWN" )  if ( workArr[i].cy > currentElement.cy ) filteredElements.push( workArr[i] );
-            if (  direction == 4 || direction == "LEFT" )  if ( workArr[i].cx < currentElement.cx ) filteredElements.push( workArr[i] );
+        function filter_half_half( arrOfElements, currentElement ){
+            var lon = arrOfElements.length;
+            var filteredElements = [];
+            for (var i = 0; i < arrOfElements.length; i++) {
+                if (  direction == 1 || direction == "UP" )    if ( arrOfElements[i].cy < currentElement.cy ) filteredElements.push( arrOfElements[i] );
+                if (  direction == 2 || direction == "RIGHT" ) if ( arrOfElements[i].cx > currentElement.cx ) filteredElements.push( arrOfElements[i] );
+                if (  direction == 3 || direction == "DOWN" )  if ( arrOfElements[i].cy > currentElement.cy ) filteredElements.push( arrOfElements[i] );
+                if (  direction == 4 || direction == "LEFT" )  if ( arrOfElements[i].cx < currentElement.cx ) filteredElements.push( arrOfElements[i] );
+            }
+            return filteredElements;
         }
-        
-        var workArr = filteredElements;
-        var filteredElements = [];
+
+        workArr = filter_half_half( workArr, currentElement );
 
         // Range filter
-        for (var i = 0; i < workArr.length; i++) {
-            if (  direction === 1 || direction === 3 || direction == "UP" || direction == "DOWN" ) 
-                if ( workArr[i].cx > _n.current.x1 && workArr[i].cx < _n.current.x2 )
-                    filteredElements.push( workArr[i] );
-
-            if (  direction === 2 || direction === 4 || direction == "RIGHT" || direction == "LEFT"  ) 
-                if ( workArr[i].cy > _n.current.y1 && workArr[i].cy < _n.current.y2 )
-                    filteredElements.push( workArr[i] );
-
+        function filter_range( arrOfElements, currentElement ){
+            var lon = arrOfElements.length;
+            var filteredElements = [];
+            for (var i = 0; i < arrOfElements.length; i++) {
+                if (  direction === 1 || direction === 3 || direction == "UP" || direction == "DOWN" ) 
+                    if ( arrOfElements[i].cx > _n.current.x1 && arrOfElements[i].cx < _n.current.x2 )
+                        filteredElements.push( arrOfElements[i] );
+    
+                if (  direction === 2 || direction === 4 || direction == "RIGHT" || direction == "LEFT"  ) 
+                    if ( arrOfElements[i].cy > _n.current.y1 && arrOfElements[i].cy < _n.current.y2 )
+                        filteredElements.push( arrOfElements[i] );
+            }
+            return filteredElements;
         }
 
-        var workArr = filteredElements;
-        var filteredElements = [];
-
+        workArr = filter_range( workArr, currentElement );
+        
         // Distances filter
-        var selectedObj = null;
-        var minDistance = null;
-
-        for (var i = 0; i < workArr.length; i++) {
-            if (i === 0){
-                selectedObj = workArr[0];
-                minDistance = workArr[0].distance;
-            } else 
-                if( workArr[i].distance < minDistance && workArr[i].distance != 0 ){
-                    selectedObj = workArr[i];
-                    minDistance = workArr[i].distance;
-                }
+        function filter_nearest( arrOfElements, currentElement ){
+            var lon = arrOfElements.length;
+            var filteredElements = [];
+            for (var i = 0; i < workArr.length; i++) {
+                if (i === 0){
+                    selectedObj = arrOfElements[0];
+                    minDistance = arrOfElements[0].distance;
+                } else 
+                    if( arrOfElements[i].distance < minDistance && arrOfElements[i].distance != 0 ){
+                        selectedObj = arrOfElements[i];
+                        minDistance = arrOfElements[i].distance;
+                    }
+            }
+            return filteredElements;
         }
 
-        return selectedObj // filteredElements
+        workArr = filter_nearest( workArr, currentElement );
+
+        return workArr // filteredElements
     }
     
     // ------------------------------------
