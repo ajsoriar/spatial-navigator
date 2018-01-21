@@ -2,7 +2,7 @@
 
 var nav = function(){
 
-    //'use strict';
+    'use strict';
 
     var bodyw = 0; //document.body.clientWidth;
     var bodyh = 0; //document.body.clientHeight;
@@ -13,7 +13,7 @@ var nav = function(){
 
     var l1, l2, l3, l4;
 
-    this.decissionFunction = null;
+    //this.decissionFunction = null;
 
     var checkInit = function() { // select one _nect if none is selected
         if( _n.current.el === null){
@@ -25,7 +25,7 @@ var nav = function(){
 
     var refreshListOfSelectableElements = function( cssLabel ) {
 
-        if ( cssLabel === null ) cssLabel = 'selectable'
+        if ( !cssLabel ) cssLabel = 'selectable'
 
         _n.listOfElements = document.getElementsByClassName( cssLabel );
 
@@ -239,7 +239,7 @@ var nav = function(){
             */
 
 
-            // FILTER 3:  Get the ones whose center is in a range
+            // FILTER 3:  Get the ones whose center is in a range, constraint to boundaries
 
             console.log("this.targetsData: ", this.targetsData );
 
@@ -330,12 +330,12 @@ var nav = function(){
     }
 
     function getDistance(x1,y1,x2,y2){
-        return dljs.utils.getDistance(x1,y1,x2,y2) //99.9
-    };
+        return dljs.utils.getDistance(x1,y1,x2,y2);
+    }
 
-    function getAngle(){
-        return 45
-    };
+    function getAngle(originX, originY, destinyX, destinyY){
+        return dljs.utils.getAngle(originX, originY, destinyX, destinyY);
+    }
 
     var doAction = function() {
 
@@ -353,6 +353,13 @@ var nav = function(){
 
         // filterNameOrID === "RANDOM"
 
+        /*
+        var result = applyFilters({
+            "1":"HALF-HALF", 
+            "2":"CONSTRAINT", // constraint to boundaries
+            "3":"NEAREST"
+        })
+        */
 
         return null
     }
