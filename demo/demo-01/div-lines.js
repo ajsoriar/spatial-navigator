@@ -282,6 +282,10 @@
       return this.getRandomNum(1, window.innerHeight );
   };
 
+    dljs.utils.getAngle = function (originX, originY, destinyX, destinyY) {
+        return 45
+    }
+
   /* -------------- */
   /* Core functions */
   /* -------------- */

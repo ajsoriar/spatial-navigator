@@ -2,7 +2,7 @@
 
 var nav = function(){
 
-    'use strict';
+    //'use strict';
 
     var bodyw = 0; //document.body.clientWidth;
     var bodyh = 0; //document.body.clientHeight;
@@ -13,7 +13,7 @@ var nav = function(){
 
     var l1, l2, l3, l4;
 
-    //this.decissionFunction = null;
+    this.decissionFunction = null;
 
     var checkInit = function() { // select one _nect if none is selected
         if( _n.current.el === null){
