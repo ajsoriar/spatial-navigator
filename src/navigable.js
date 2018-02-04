@@ -1,18 +1,13 @@
 // 'use strict';
 
 var nav = function(){
-
+    
     //'use strict';
 
     var bodyw = 0; //document.body.clientWidth;
     var bodyh = 0; //document.body.clientHeight;
-
     var autopreviewAfterMove = false;
-
-    var _n = {};
-
     var l1, l2, l3, l4;
-
     this.decissionFunction = null;
 
     var checkInit = function() { // select one _nect if none is selected
@@ -20,12 +15,12 @@ var nav = function(){
             refreshListOfSelectableElements();
             var rnd = Math.floor(Math.random() * _n.listOfElements.length ) + 0;
             doNewSelection( rnd );
-        };
+        }
     };
 
     var refreshListOfSelectableElements = function( cssLabel ) {
 
-        if ( !cssLabel ) cssLabel = 'selectable'
+        if ( !cssLabel ) cssLabel = 'selectable';
 
         _n.listOfElements = document.getElementsByClassName( cssLabel );
 
@@ -38,21 +33,40 @@ var nav = function(){
         } 
     };
 
-    /*
+    var utils = {
 
-    var getBrowserWidth = function() {
-        return document.documentElement.clientWidth;
+        // Add Class Cross-browser solution: The classList property is not supported in Internet Explorer 9. The following code will work in all browsers:
+
+        addClass: function ( domEl, styleName ) {
+            if ( domEl === null || styleName === null ) return -1;
+            var element = domEl, name, arr;
+            arr = element.className.split(" ");
+            if (arr.indexOf(styleName) == -1) {
+                element.className += " " + styleName;
+            }
+        },
+
+        // Remove Class Cross-browser solution: The classList property is not supported in Internet Explorer 9. The following code will work in all browsers:
+
+        removeClass: function ( domEl, styleName ) {
+            if ( domEl === null || styleName === null ) return -1;
+            var element = domEl;
+            element.className = element.className.replace("/\b"+ styleName +"\b/g", "");
+        }
+
     };
 
-    var getBrowserHeight = function() {
-        return document.documentElement.clientHeight;
-    };
+    // var getBrowserWidth = function() {
+    //     return document.documentElement.clientWidth;
+    // };
 
-    */
-    
+    // var getBrowserHeight = function() {
+    //     return document.documentElement.clientHeight;
+    // };
+
     var doNewSelection = function( num ) {
 
-        if ( num < 0) return
+        if ( num < 0) return;
 
         console.log( _n.listOfElements.length +" selectable elements.");
 
@@ -88,16 +102,16 @@ var nav = function(){
 
             // 4. Draw visual guide depending on the choosen filter filter
 
-                dljs.clear(); // Clear all previous guides
+                // dljs.clear(); // Clear all previous guides
 
-                //dljs.linex(null,0  ,0  ,50 ,50 , 1, "#ff0000",0.8, true, 5, "#ff00ff");
-                l1 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+2000, _n.current.cy-2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
-                l2 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-2000, _n.current.cy-2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
-                l3 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-2000, _n.current.cy+2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
-                l4 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+2000, _n.current.cy+2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+                // //dljs.linex(null,0  ,0  ,50 ,50 , 1, "#ff0000",0.8, true, 5, "#ff00ff");
+                // l1 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+2000, _n.current.cy-2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+                // l2 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-2000, _n.current.cy-2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+                // l3 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx-2000, _n.current.cy+2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
+                // l4 = dljs.linex( null, _n.current.cx, _n.current.cy, _n.current.cx+2000, _n.current.cy+2000, 1, "#ff0000",0.8, true, 5, "#ff00ff");
 
-                l6 = dljs.linex( null, 0, _n.current.cy, bodyw, _n.current.cy, 1, "#00ff00",0.5, true, 5, "#ff00ff"); // x axis
-                l7 = dljs.linex( null, _n.current.cx, 0, _n.current.cx, bodyh, 1, "#00ff00",0.5, true, 5, "#ff00ff"); // y axis
+                // l6 = dljs.linex( null, 0, _n.current.cy, bodyw, _n.current.cy, 1, "#00ff00",0.5, true, 5, "#ff00ff"); // x axis
+                // l7 = dljs.linex( null, _n.current.cx, 0, _n.current.cx, bodyh, 1, "#00ff00",0.5, true, 5, "#ff00ff"); // y axis
 
             // end
 
@@ -111,7 +125,7 @@ var nav = function(){
     var substract = function (a,b){
         var result = 0;
         if ( a === b ) return 0;
-        if ( a > b ) return (a - b)
+        if ( a > b ) return (a - b);
         return (b - a)
     };
 
@@ -193,8 +207,6 @@ var nav = function(){
             var target = [];
             console.log(".a Before filter 1, target: ", target );
 
-            // /*
-
             // FILTER 1: Half / Half
             for (var i = 0; i < this.targetsData.length; i++) {
 
@@ -220,32 +232,29 @@ var nav = function(){
                 
             }
 
-            // */
 
             console.log(".b After filter 1, target: ", target );
 
             // FILTER 2: Get the closest to the axis x or Y
 
-            /*
-            var selectedObj = null;
-            var minY = null;
+            // var selectedObj = null;
+            // var minY = null;
 
-            for (var i = 0; i < target.length; i++) {
-                if (i === 0){
-                    selectedObj = target[0]; //.distance_axis_y;
-                    minY = target[0].distance_axis_y;
-                } else {
-                    if( target[i].distance_axis_y < minY ){
-                        selectedObj = target[i]; //.distance_axis_y;
-                        minY = target[i].distance_axis_y;
-                    }
-                }
+            // for (var i = 0; i < target.length; i++) {
+            //     if (i === 0){
+            //         selectedObj = target[0]; //.distance_axis_y;
+            //         minY = target[0].distance_axis_y;
+            //     } else {
+            //         if( target[i].distance_axis_y < minY ){
+            //             selectedObj = target[i]; //.distance_axis_y;
+            //             minY = target[i].distance_axis_y;
+            //         }
+            //     }
          
-            }
+            // }
 
-            console.log(".c After filter 2, decision was taken: ", selectedObj );
+            // console.log(".c After filter 2, decision was taken: ", selectedObj );
 
-            */
 
 
             // FILTER 3:  Get the ones whose center is in a range, constraint to boundaries
@@ -292,7 +301,7 @@ var nav = function(){
 
             // SELECTOR 5: Random
 
-            // ...
+            // ... var rnd = Math.floor(Math.random() * _n.listOfElements.length ) + 0;
 
 
             console.log(".c After filter 2, decision was taken: ", selectedObj );
@@ -339,11 +348,11 @@ var nav = function(){
     }
 
     function getDistance(x1,y1,x2,y2){
-        return dljs.utils.getDistance(x1,y1,x2,y2);
+        //return dljs.utils.getDistance(x1,y1,x2,y2);
     }
 
     function getAngle(originX, originY, destinyX, destinyY){
-        return dljs.utils.getAngle(originX, originY, destinyX, destinyY)
+        //return dljs.utils.getAngle(originX, originY, destinyX, destinyY)
     }
 
     var doAction = function() {
@@ -361,6 +370,11 @@ var nav = function(){
     // --------------------------
 
     var automaticallyGetNextElement = function( arrOfElements, currentElement, movDirection, filterNameOrID ) {
+
+        console.log("automaticallyGetNextElement(), arrOfElements:", arrOfElements);
+        console.log("automaticallyGetNextElement(), currentElement:", currentElement);
+        console.log("automaticallyGetNextElement(), movDirection:", movDirection);
+        console.log("automaticallyGetNextElement(), filterNameOrID:", filterNameOrID);
 
         if ( !currentElement ) return null;
 
@@ -418,18 +432,20 @@ var nav = function(){
 
         workArr = filter_nearest( workArr, currentElement );
 
-        return workArr // filteredElements
-    }
+        return workArr; // filteredElements
+    };
     
     // ------------------------------------
     // public
     // ------------------------------------
 
+    var _n = {};
+
     _n.previousEl = null;
 
     //Selected element
     _n.current = {};
-    _n.current.el = {};
+    _n.current.el = null;
     _n.current.domRect = null;
     _n.current.cx = null;
     _n.current.cy = null;
@@ -486,7 +502,7 @@ var nav = function(){
 
     _n.setTotalHeight = function( val ){
         bodyh = val;
-    }
+    };
 
     _n.setDecissionFunction = function( _func ){
         this.decissionFunction = _func;
@@ -509,19 +525,37 @@ var nav = function(){
     };
 
     _n.getNextElement = function( arrOfElements, currentElement, movDirection, filterNameOrID ) {
-        console.log("getNextElement()");
+
+        console.log("getNextElement(), arrOfElements:", arrOfElements);
+        console.log("getNextElement(), currentElement:", currentElement);
+        console.log("getNextElement(), movDirection:", movDirection);
+        console.log("getNextElement(), filterNameOrID:", filterNameOrID);
+
+        /*
 
         if ( arrOfElements === null ) return undefined;
-        if ( currentElement === null ) return undefined;
-        if ( movDirection === null ) return undefined;
+        if ( currentElement === null ) { 
+            nav.doSelection( arrOfElements[0] ); 
+            return; 
+        }
+        
+        //currentElement = arrOfElements[0]; //undefined; //nav.applyFilters( arrOfElements, 'EXCLUDE-CURRENT', ["RANDOM"])
+        //return undefined; //nav.filter( arrOfElements, ["RANDOM"])
         if ( filterNameOrID === null ) filterNameOrID = "RANDOM";
+        if ( movDirection === null ) filterNameOrID = "RANDOM"; 
 
-        return getNextElement( arrOfElements, currentElement, movDirection, filterNameOrID );
+        return automaticallyGetNextElement( arrOfElements, currentElement, movDirection, filterNameOrID );
+        */
+
+        return -1;
     };
 
-    return _n
-}
+    _n.doSelection = function( domElement ) {
+        if ( domElement === null ) return -1;
+        //if ( _n.current.el != null ) utils.removeClass( _n.current.el, "selected");
+        //_n.current.el = domElement; //.removeClass("selected");
+        //utils.addClass( _n.current.el, "selected");
+    };
 
-nav = nav();
-
-
+    return _n;
+};
