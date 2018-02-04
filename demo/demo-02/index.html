@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css" />
+    <script src="./../../src/navigable.js"></script>
+    <script src="keyboard.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <body>
+    <canvas id="bgCanvas"></canvas>
+
+    <div style="position: absolute; top: 0; left: 0">
+      <ul>
+        <li class="selectable ajsr-box-2" style="position: absolute; top: 10px; left: 100px;">a</li>
+        <li class="selectable ajsr-box-2" style="position: absolute; top: 10px; left: 200px;">a</li>
+        <li class="selectable ajsr-box-2" style="position: absolute; top: 10px; left: 300px;">a</li>
+        <li class="selectable ajsr-box-2" style="position: absolute; top: 10px; left: 400px;">a</li>
+        <li class="selectable ajsr-box-2" style="position: absolute; top: 10px; left: 500px;">a</li>
+        <li class="selectable ajsr-box-2" style="position: absolute; top: 10px; left: 600px;">a</li>
+        <li class="selectable ajsr-box-2" style="position: absolute; top: 10px; left: 700px;">a</li>
+        <li class="selectable ajsr-box-2" style="position: absolute; top: 10px; left: 800px;">a</li>
+        <li class="selectable ajsr-box-2" style="position: absolute; top: 10px; left: 900px;">a</li>
+      </ul>
+    </div> 
+
+    <script type="text/javascript">
+
+      // selec one item
+      window.arrOfElements = document.getElementsByClassName("selectable");
+      nav.getNextElement( window.arrOfElements, null, null, null );
+
+</script>
+    
+  </body>
+
+</html>
