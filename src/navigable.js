@@ -531,10 +531,10 @@ var nav = function(){
         console.log("getNextElement(), movDirection:", movDirection);
         console.log("getNextElement(), filterNameOrID:", filterNameOrID);
 
-        /*
+    
 
         if ( arrOfElements === null ) return undefined;
-        if ( currentElement === null ) { 
+        if ( currentElement === undefined || currentElement === null ) { 
             nav.doSelection( arrOfElements[0] ); 
             return; 
         }
@@ -545,16 +545,16 @@ var nav = function(){
         if ( movDirection === null ) filterNameOrID = "RANDOM"; 
 
         return automaticallyGetNextElement( arrOfElements, currentElement, movDirection, filterNameOrID );
-        */
+     /*       */
 
         return -1;
     };
 
     _n.doSelection = function( domElement ) {
-        if ( domElement === null ) return -1;
-        //if ( _n.current.el != null ) utils.removeClass( _n.current.el, "selected");
-        //_n.current.el = domElement; //.removeClass("selected");
-        //utils.addClass( _n.current.el, "selected");
+        if ( domElement === undefined || domElement === null ) return -1;
+        if ( _n.current.el != null ) utils.removeClass( _n.current.el, "selected");
+        _n.current.el = domElement; //.removeClass("selected");
+        utils.addClass( _n.current.el, "selected");
     };
 
     return _n;
