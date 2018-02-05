@@ -559,3 +559,5 @@ var nav = function(){
 
     return _n;
 };
+
+nav = nav();
