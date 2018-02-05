@@ -445,14 +445,16 @@ var nav = function(){
 
     var _n = {};
 
-    _n.previousEl = null;
+    _n.current = {
+        el: null,
+        domRect: null,
+        cx: null,
+        cy: null
+    };
 
-    //Selected element
-    _n.current = {};
-    _n.current.el = null;
-    _n.current.domRect = null;
-    _n.current.cx = null;
-    _n.current.cy = null;
+    _n.previousSelectedElement = null;
+    _n.selectedElement = null;
+
     _n.w = null;
     _n.h = null;
     _n.cx = null;
@@ -466,32 +468,65 @@ var nav = function(){
         calculateAllDistances();
     };
 
-    _n.moveUp = function() {
-        checkInit();
-        calculateAllDistances();
-        var selectedIndex = takeADecision(1);
-        doNewSelection( selectedIndex );
-    };
-
-    _n.moveDown = function() {
-        checkInit();
-        calculateAllDistances();
-        var selectedIndex = takeADecision(3);
-        doNewSelection( selectedIndex );
-    };
-
-    _n.moveRight = function() {
-        checkInit();
-        calculateAllDistances();
-        var selectedIndex = takeADecision(2);
-        doNewSelection( selectedIndex );
-    };
-
-    _n.moveLeft = function() {
-        checkInit();
-        calculateAllDistances();
-        var selectedIndex = takeADecision(4);
-        doNewSelection( selectedIndex );
+    _n.move = {
+        afterMove: function() { console.log("nav.move.afterMove()") },
+        beforeMove: function() { console.log("nav.move.beforeMove()") },
+        up: function() {
+            this.beforeMove();
+            checkInit();
+            calculateAllDistances();
+            var selectedIndex = takeADecision(1);
+            doNewSelection( selectedIndex );
+            this.afterMove();
+            return _n.selectedElement;
+        },
+        down: function() {
+            this.beforeMove();
+            checkInit();
+            calculateAllDistances();
+            var selectedIndex = takeADecision(3);
+            doNewSelection( selectedIndex );
+            this.afterMove();
+            return _n.selectedElement;
+        },
+        right: function() {
+            this.beforeMove();
+            checkInit();
+            calculateAllDistances();
+            var selectedIndex = takeADecision(2);
+            doNewSelection( selectedIndex );
+            this.afterMove();
+            return _n.selectedElement;
+        },
+        left: function() {
+            this.beforeMove();
+            checkInit();
+            calculateAllDistances();
+            var selectedIndex = takeADecision(4);
+            doNewSelection( selectedIndex );
+            this.afterMove();
+            return _n.selectedElement;
+        },
+        upRight: function() {
+            this.beforeMove();
+            this.afterMove();
+            return _n.selectedElement;
+        },
+        upLeft: function() {
+            this.beforeMove();
+            this.afterMove();
+            return _n.selectedElement;
+        },
+        downRight: function() {
+            this.beforeMove();
+            this.afterMove();
+            return _n.selectedElement;
+        },
+        downLeft: function() {
+            this.beforeMove();
+            this.afterMove();
+            return _n.selectedElement;
+        },
     };
 
     _n.reset = function() {
