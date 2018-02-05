@@ -52,6 +52,10 @@ var nav = function(){
             if ( domEl === null || styleName === null ) return -1;
             var element = domEl;
             element.className = element.className.replace("/\b"+ styleName +"\b/g", "");
+        },
+
+        getRandomNum: function(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
     };
@@ -535,7 +539,7 @@ var nav = function(){
 
         if ( arrOfElements === null ) return undefined;
         if ( currentElement === undefined || currentElement === null ) { 
-            nav.doSelection( arrOfElements[0] ); 
+            nav.doSelection( arrOfElements[ utils.getRandomNum(0,arrOfElements.length -1 ) ] ); 
             return; 
         }
         
