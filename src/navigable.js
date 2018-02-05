@@ -101,6 +101,7 @@ var nav = function(){
 
                 $(".selectable").removeClass("is-selected");
                 $( _n.current.el ).addClass("is-selected");
+                //_n.applySelectionStyle( _n.current.el );
 
                 console.log("selected is: ", num );
 
@@ -143,9 +144,6 @@ var nav = function(){
 
     var calculateDistances = function( arrOfElements, currentEl ) {
 
-        //var cdr = currentEl.domRect;
-        //this.targetsData = []; // clear
-
         var resultsArr = [];
         for (var i = 0; i < arrOfElements.length; i++) {
             // calculate
@@ -171,17 +169,12 @@ var nav = function(){
             p.slope = null;
             p.group = null;
             resultsArr.push( p );
-
         }
 
         return resultsArr;
     };
 
     function takeADecision( direction ) { // direction [1,2,3 or 4]
-        // We´ve got:
-        // 1) this.targetsData
-        // 2) _n.current
-        // so ...
 
         if ( this.decissionFunction != null ) {
 
@@ -192,7 +185,7 @@ var nav = function(){
             console.log("decission function is null");
         }
 
-        var FILTERS_GROUP = 1; //1;
+        var FILTERS_GROUP = 1;
 
         // -----------------------
         // --- FILTERS GROUP 1 ---
@@ -260,7 +253,6 @@ var nav = function(){
             // console.log(".c After filter 2, decision was taken: ", selectedObj );
 
 
-
             // FILTER 3:  Get the ones whose center is in a range, constraint to boundaries
 
             console.log("this.targetsData: ", this.targetsData );
@@ -311,8 +303,6 @@ var nav = function(){
             console.log(".c After filter 2, decision was taken: ", selectedObj );
 
             decisionIndex = selectedObj.id;
-
-            console.log(".");
 
             return decisionIndex; // Returns an element
         }
@@ -570,11 +560,9 @@ var nav = function(){
         console.log("getNextElement(), movDirection:", movDirection);
         console.log("getNextElement(), filterNameOrID:", filterNameOrID);
 
-    
-
         if ( arrOfElements === null ) return undefined;
         if ( currentElement === undefined || currentElement === null ) { 
-            nav.doSelection( arrOfElements[ utils.getRandomNum(0,arrOfElements.length -1 ) ] ); 
+            nav.applySelectionStyle( arrOfElements[ utils.getRandomNum(0,arrOfElements.length -1 ) ] ); 
             return; 
         }
         
@@ -584,16 +572,15 @@ var nav = function(){
         if ( movDirection === null ) filterNameOrID = "RANDOM"; 
 
         return automaticallyGetNextElement( arrOfElements, currentElement, movDirection, filterNameOrID );
-     /*       */
 
         return -1;
     };
 
-    _n.doSelection = function( domElement ) {
+    _n.applySelectionStyle = function( domElement ) {
         if ( domElement === undefined || domElement === null ) return -1;
-        if ( _n.current.el != null ) utils.removeClass( _n.current.el, "selected");
-        _n.current.el = domElement; //.removeClass("selected");
-        utils.addClass( _n.current.el, "selected");
+        if ( _n.current.el != null ) utils.removeClass( _n.current.el, "is-selected");
+        _n.current.el = domElement;
+        utils.addClass( _n.current.el, "is-selected");
     };
 
     return _n;

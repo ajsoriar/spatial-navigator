@@ -110,10 +110,12 @@ li, ul{
   background-color: black;
   box-shadow: 0 0 10px 7px #00ff40;
 }
+/*
 .selectable.selected {
   background-color: black;
   box-shadow: 0 0 10px 7px #00ff40;
 }
+*/
 .btn-demo{
   font-family: sans-serif;
   font-weight: 600;
