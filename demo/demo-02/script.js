@@ -24,22 +24,5 @@ appWindow.resize = function(){
 
 window.addEventListener("resize", appWindow.resize);
 
-App = {};
+//App = {};
 
-App.doStuff = function(){
-
-    nav.setDecissionFunction = function( that ){
-
-        console.log("- my decission function, that:", that );
-    }
-};
-
-// --------------------------
-// Document ready
-// --------------------------
-
-$( document ).ready(function() {
-
-    console.log('jQuery document ready! 1');
-
-});

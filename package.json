@@ -1,11 +1,14 @@
 {
   "name": "navigation-experiment",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "repository": "https://github.com/ajsoriar/navigation-experiment.git",
   "author": "asr <ajsoriar@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "purple-console": "^1.0.0"
+  },
+  "devDependencies": {
     "div-lines": "^1.2.0"
   }
 }

@@ -15,3 +15,5 @@ bower_components
 yarn.lock
 .vscode
 .jsbeautifyrc
+.vscode
+.jsbeautifyrc
