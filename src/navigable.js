@@ -13,7 +13,7 @@ var nav = function(){
     var checkInit = function() { // select one _nect if none is selected
         if( _n.current.el === null){
             refreshListOfSelectableElements();
-            var rnd = Math.floor(Math.random() * _n.listOfElements.length ) + 0;
+            var rnd = Math.floor(Math.random() * _n.listOfElements.length ) + 0; // TODO: Select the first one! or look for a default item...
             doNewSelection( rnd );
         }
     };
@@ -54,6 +54,13 @@ var nav = function(){
             element.className = element.className.replace("/\b"+ styleName +"\b/g", "");
         },
 
+        removeClassFroElements: function( arrOfElements, styleName ){
+
+            for (i=0; i < arrOfElements.length; i++){
+                this.removeClass( arrOfElements[i], styleName );
+            }
+        },
+
         getRandomNum: function(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
@@ -78,7 +85,7 @@ var nav = function(){
 
             // 1. Paint numbers inside navigble elements
 
-                for (var i = 0; i < _n.listOfElements.length; i++) _n.listOfElements[i].innerHTML = i;
+                //for (var i = 0; i < _n.listOfElements.length; i++) _n.listOfElements[i].innerHTML = i;
 
             // 2. Calculate stuff to draw visual guides
 
@@ -99,9 +106,14 @@ var nav = function(){
 
             // 3. Do the selection
 
+            /*
                 $(".selectable").removeClass("is-selected");
                 $( _n.current.el ).addClass("is-selected");
                 //_n.applySelectionStyle( _n.current.el );
+            */
+
+                utils.removeClassFroElements( document.getElementsByClassName("selectable"), "is-selected");
+                utils.addClass( _n.current.el, "is-selected");
 
                 console.log("selected is: ", num );
 
