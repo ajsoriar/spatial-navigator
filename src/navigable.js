@@ -1,8 +1,8 @@
 /**
- * navigable
+ * spatial-navigator
  * Simple javascript navigation lib.
- * @version v1.0.1 - 2018-04-03
- * @link https://github.com/ajsoriar/navigable
+ * @version v0.1.0- 2018-05-11
+ * @link https://github.com/ajsoriar/spatial-navigator
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -103,22 +103,14 @@
             nav.current.h = nav.current.domRect.bottom - nav.current.domRect.top;
             nav.current.cx = nav.current.domRect.left + nav.current.w / 2;
             nav.current.cy = nav.current.domRect.top + nav.current.h / 2;
-
             nav.current.x1 = nav.current.domRect.left;
             nav.current.x2 = nav.current.domRect.right;
             nav.current.y1 = nav.current.domRect.top;
             nav.current.y2 = nav.current.domRect.bottom;
 
             // 3. Do the selection
-
-            /*
-                $(".focusable").removeClass("focused");
-                $( nav.current.el ).addClass("focused");
-                //nav.applySelectionStyle( nav.current.el );
-            */
-
             removeFocusedClassFromAllElements();
-            Utils.addClass(nav.current.el, "focused");
+            Utils.addClass(nav.current.el, "focused"); 
 
             console.log("selected is: ", num);
 
@@ -386,7 +378,7 @@
 
         // ------------
         // Range filter
-	// ------------
+	    // ------------
 	
         function filter_range(arrOfElements, currentElement) {
             var lon = arrOfElements.length;
@@ -407,7 +399,7 @@
 
         // ----------------
         // Distances filter
-	// ----------------
+	    // ----------------
 	
         function filter_nearest(arrOfElements, currentElement) {
             var lon = arrOfElements.length;
@@ -511,22 +503,10 @@
             calculateAllDistances();
         },
         action: function() {
-            
-            // if (this.current.el === null) {
-            //     console.error("No item");
-            //     return
-            // }
-
             console.log("this.current: ", this.current );
-
             var atributo = this.current.el.getAttribute("data-link");
             console.log("data-link: ", atributo  );
-
-            //eval("window."+ atributo);
             window.router.goTo( atributo );
-
-            //var dl =  this.current.dataset.link;
-            //console.log("data-link: ", dl );
         },
         recalculateContainers: function() {
             console.log("recalculateContainers()");
@@ -553,8 +533,6 @@
             if (movDirection === null) filterNameOrID = "RANDOM";
 
             return automaticallyGetNextElement(arrOfElements, currentElement, movDirection, filterNameOrID);
-
-            return -1;
         },
         applySelectionStyle: function(domElement) {
             if (domElement === undefined || domElement === null) return -1;
@@ -572,7 +550,7 @@ document.addEventListener('keydown', (e) => {
 
     switch (e.which) {
 
-        case 37: // left
+        case 37:
             nav.move.left();
             break;
 
@@ -596,14 +574,9 @@ document.addEventListener('keydown', (e) => {
             // var x = history.length;
             // ajsrConsole.log(x);
             // window.history.back();
-            App.exit();
             break;
-        
-        case 96: // 0
-            nav.reset();
-            break;
-
+        default:
+            // do nothing!
     }
 
 });
-
