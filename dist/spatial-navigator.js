@@ -1,31 +1,29 @@
 /**
  * spatial-navigator
- * Simple javascript navigation lib.
- * @version v0.1.0- 2018-05-11
+ * JS spatial navigation library.
+ * @version 0.1.0 - 2019-09-11
  * @link https://github.com/ajsoriar/spatial-navigator
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
 
-(function () { // An immediately invoked function will wrap our code
+(function () { 
 
     "use strict"
 
-    var checkInit = function() { // select one focusable item if none is selected
+    var checkInit = function() { 
         if (nav.current.el === null) {
             refreshListOfFocusableItems();
-            var rnd = Math.floor(Math.random() * nav.listOfFocusableElements.length) + 0; // TODO: Select the first one! or look for a default item...
+            var rnd = Math.floor(Math.random() * nav.listOfFocusableElements.length) + 0; 
             focusItem(rnd);
         }
     };
 
-    var refreshListOfFocusableItems = function(cssLabel) { // Updates nav.listOfFocusableElements 
+    var refreshListOfFocusableItems = function(cssLabel) { 
 
         if (!cssLabel) cssLabel = 'focusable';
 
         nav.listOfFocusableElements = document.getElementsByClassName(cssLabel);
-
-        // attach an id if navigable elements do not have one
         for (var i = 0; i < nav.listOfFocusableElements.length; i++) {
             if (nav.listOfFocusableElements[i].id == "") {
                 nav.listOfFocusableElements[i].id = Date.now() + i;
@@ -34,8 +32,6 @@
     };
 
     var Utils = {
-
-        // Add Class Cross-browser solution: The classList property is not supported in Internet Explorer 9. The following code will work in all browsers:
 
         addClass: function(domEl, styleName) {
             if (domEl === null || styleName === null) return -1;
@@ -47,12 +43,9 @@
             }
         },
 
-        // Remove Class Cross-browser solution: The classList property is not supported in Internet Explorer 9. The following code will work in all browsers:
-
         removeClass: function(domEl, styleName) {
             if (domEl === null || styleName === null) return -1;
             var element = domEl;
-            //element.className = element.className.replace("/\b" + styleName + "\b/g", "");
             element.classList.remove(styleName);
         },
 
@@ -89,12 +82,6 @@
 
         if (nav.listOfFocusableElements.length > 0) {
 
-            // 1. Paint numbers inside navigble elements
-
-            //for (var i = 0; i < nav.listOfFocusableElements.length; i++) nav.listOfFocusableElements[i].innerHTML = i;
-
-            // 2. Calculate stuff to draw visual guides
-
             nav.current.el = nav.listOfFocusableElements[num];
             nav.current.domRect = nav.current.el.getBoundingClientRect();
             nav.current.c = nav.current.domRect.right - nav.current.domRect.left;
@@ -107,8 +94,6 @@
             nav.current.x2 = nav.current.domRect.right;
             nav.current.y1 = nav.current.domRect.top;
             nav.current.y2 = nav.current.domRect.bottom;
-
-            // 3. Do the selection
             removeFocusedClassFromAllElements();
             Utils.addClass(nav.current.el, "focused"); 
 
@@ -123,8 +108,6 @@
     var removeFocusedClassFromAllElements = function() {
         Utils.removeClassFromElements(document.getElementsByClassName("focusable"), "focused");
     };
-
-    //var focusableTargets = null;
 
     function calculateAllDistances() {
 
@@ -158,7 +141,7 @@
             p.cy = domRect.top + p.h / 2;
             p.distance = getDistance(currentEl.cx, currentEl.cy, p.cx, p.cy);
 
-            if (p.distance === 0) continue; //return;
+            if (p.distance === 0) continue; 
 
             p.angle = getAngle();
             p.distance_axis_x = Utils.substract(p.cx, currentEl.cx);
@@ -171,13 +154,9 @@
         return resultsArr;
     };
 
-    function takeADecision(direction) { // direction [1,2,3 or 4]
+    function takeADecision(direction) { 
 
         var FILTERS_GROUP = 1;
-
-        // -----------------------
-        // --- FILTERS GROUP 1 ---
-        // -----------------------
 
         if (FILTERS_GROUP === 1) {
 
@@ -189,30 +168,24 @@
             var target = [];
 
             console.info(".a Before filter 1 (Half / Half]), target: ", target);
-
-            // -----------------------------------------
-            // Half / Half
-            // -----------------------------------------
-
-            // FILTER 1:
             for (var i = 0; i < nav.focusableTargets.length; i++) {
 
-                if (direction === 1) { // up
+                if (direction === 1) { 
                     console.log("UP");
                     if (nav.focusableTargets[i].cy < nav.current.cy) target.push(nav.focusableTargets[i]);
                 }
 
-                if (direction === 2) { // right
+                if (direction === 2) { 
                     console.log("RIGHT");
                     if (nav.focusableTargets[i].cx > nav.current.cx) target.push(nav.focusableTargets[i]);
                 }
 
-                if (direction === 3) { // down
+                if (direction === 3) { 
                     console.log("DOWN");
                     if (nav.focusableTargets[i].cy > nav.current.cy) target.push(nav.focusableTargets[i]);
                 }
 
-                if (direction === 4) { // left
+                if (direction === 4) { 
                     console.log("LEFT");
                     if (nav.focusableTargets[i].cx < nav.current.cx) target.push(nav.focusableTargets[i]);
                 }
@@ -220,48 +193,18 @@
 
             console.info(".b After filter 1, target: ", target);
 
-
-            // -----------------------------------------
-            // Closest to the axis x or Y
-            // -----------------------------------------
-
-            // FILTER 2: Get the closest to the axis x or Y
-
-            // var selectedObj = null;
-            // var minY = null;
-
-            // for (var i = 0; i < target.length; i++) {
-            //     if (i === 0){
-            //         selectedObj = target[0]; //.distance_axis_y;
-            //         minY = target[0].distance_axis_y;
-            //     } else {
-            //         if( target[i].distance_axis_y < minY ){
-            //             selectedObj = target[i]; //.distance_axis_y;
-            //             minY = target[i].distance_axis_y;
-            //         }
-            //     }
-
-            // }
-
-            // console.log(".c After filter 2, decision was taken: ", selectedObj );
-
-
-            // FILTER 3:  Get the ones whose center is in a range, constraint to boundaries
-
             console.log("nav.focusableTargets: ", nav.focusableTargets);
 
             for (var i = 0; i < nav.focusableTargets.length; i++) {
 
-                //console.log("i: ", i);
-
-                if (direction === 1 || direction === 3) { // up
+                if (direction === 1 || direction === 3) { 
 
                     if (nav.focusableTargets[i].cx > nav.current.x1 && nav.focusableTargets[i].cx < nav.current.x2) {
                         target.push(nav.focusableTargets[i]);
                     }
                 }
 
-                if (direction === 2 || direction === 4) { // right
+                if (direction === 2 || direction === 4) { 
 
                     if (nav.focusableTargets[i].cy > nav.current.y1 && nav.focusableTargets[i].cy < nav.current.y2) {
                         target.push(nav.focusableTargets[i]);
@@ -270,8 +213,6 @@
             }
 
             console.log("target: ", target);
-
-            // SELECTOR 4: Get the lower distance value
 
             var selectedObj = null;
             var minDistance = null;
@@ -288,21 +229,13 @@
                 }
             }
 
-            // SELECTOR 5: Random
-
-            // ... var rnd = Math.floor(Math.random() * nav.listOfFocusableElements.length ) + 0;
-
 
             console.log(".c After filter 2, decision was taken: ", selectedObj);
 
             decisionIndex = selectedObj? selectedObj.id: null;
 
-            return decisionIndex; // Returns an element
+            return decisionIndex; 
         }
-
-        // -----------------------
-        // --- FILTERS GROUP 2 ---
-        // -----------------------
 
         console.log("nav.focusableTargets:", nav.focusableTargets);
 
@@ -328,18 +261,16 @@
 
             decisionIndex = selectedObj.id;
 
-            return decisionIndex; // Returns an element
+            return decisionIndex; 
 
         }
 
     }
 
     function getDistance(x1, y1, x2, y2) {
-        //return dljs.Utils.getDistance(x1,y1,x2,y2);
     }
 
     function getAngle(originX, originY, destinyX, destinyY) {
-        //return dljs.Utils.getAngle(originX, originY, destinyX, destinyY)
     }
 
     var doAction = function() {
@@ -355,9 +286,7 @@
 
         if (!currentElement) return null;
 
-        var workArr = calculateDistances(arrOfElements, currentElement); //  arrOfElements;
-
-        // FILTER 1: Half / Half
+        var workArr = calculateDistances(arrOfElements, currentElement); 
         function filter_half_half(arrOfElements, currentElement) {
             var lon = arrOfElements.length;
             var filteredElements = [];
@@ -375,10 +304,6 @@
         }
 
         workArr = filter_half_half(workArr, currentElement);
-
-        // ------------
-        // Range filter
-	    // ------------
 	
         function filter_range(arrOfElements, currentElement) {
             var lon = arrOfElements.length;
@@ -396,10 +321,6 @@
         }
 
         workArr = filter_range(workArr, currentElement);
-
-        // ----------------
-        // Distances filter
-	    // ----------------
 	
         function filter_nearest(arrOfElements, currentElement) {
             var lon = arrOfElements.length;
@@ -419,7 +340,7 @@
 
         workArr = filter_nearest(workArr, currentElement);
 
-        return workArr; // filteredElements
+        return workArr; 
     };
 
     var focusById = function( targetID ) {
@@ -427,8 +348,6 @@
         refreshListOfFocusableItems();
         removeFocusedClassFromAllElements();
         var num = null;
-    
-        // attach an id if navigable elements do not have one
         for (var i = 0; i < nav.listOfFocusableElements.length; i++) {
             if (nav.listOfFocusableElements[i].id == targetID) {
                 num = i;
@@ -455,45 +374,37 @@
         },
         move : {
             up: function() {
-                //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
                 var selectedIndex = takeADecision(1);
                 focusItem(selectedIndex);
-                //this.afterMove();
                 return nav.selectedElement;
             },
             down: function() {
-                //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
                 var selectedIndex = takeADecision(3);
                 focusItem(selectedIndex);
-                //this.afterMove();
                 return nav.selectedElement;
             },
             right: function() {
-                //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
                 var selectedIndex = takeADecision(2);
                 focusItem(selectedIndex);
-                //this.afterMove();
                 return nav.selectedElement;
             },
             left: function() {
-                //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
                 var selectedIndex = takeADecision(4);
                 focusItem(selectedIndex);
-                //this.afterMove();
                 return nav.selectedElement;
             },
             rnd: function() {
 
             },
-            to: function() { // id or class
+            to: function() { 
 
             }
         },
@@ -526,9 +437,6 @@
                 this.applySelectionStyle(arrOfElements[Utils.getRandomNum(0, arrOfElements.length - 1)]);
                 return;
             }
-
-            //currentElement = arrOfElements[0]; //undefined; //nav.applyFilters( arrOfElements, 'EXCLUDE-CURRENT', ["RANDOM"])
-            //return undefined; //nav.filter( arrOfElements, ["RANDOM"])
             if (filterNameOrID === null) filterNameOrID = "RANDOM";
             if (movDirection === null) filterNameOrID = "RANDOM";
 
@@ -544,7 +452,7 @@
     };
 }());
 
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', function (e) {
 
     console.log("keydown e.which:", e);
 
@@ -571,12 +479,8 @@ document.addEventListener('keydown', (e) => {
             break;
 
         case 8:
-            // var x = history.length;
-            // ajsrConsole.log(x);
-            // window.history.back();
             break;
         default:
-            // do nothing!
     }
 
 });
