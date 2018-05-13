@@ -1,13 +1,13 @@
 /**
  * spatial-navigator
  * JS spatial navigation library.
- * @version 0.1.1 - 2018-05-13
+ * @version 1.0.0 - 2018-05-13
  * @link https://github.com/ajsoriar/spatial-navigator
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
 
-(function () { 
+(function() { 
 
     "use strict"
 
@@ -26,8 +26,7 @@
         nav.listOfFocusableElements = document.getElementsByClassName(cssLabel);
         for (var i = 0; i < nav.listOfFocusableElements.length; i++) {
             if (nav.listOfFocusableElements[i].id == "") {
-                nav.listOfFocusableElements[i].id = i;
-                nav.listOfFocusableElements[i].innerHTML = i;
+                nav.listOfFocusableElements[i].id = Date.now() + i;
             }
         }
     };
@@ -69,12 +68,12 @@
         getDistance: function(x1, y1, x2, y2) {
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         },
-    
+
         getAngle: function(originX, originY, destinyX, destinyY) {
 
         },
 
-        getRandomNum: function (min, max) {
+        getRandomNum: function(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
@@ -82,9 +81,9 @@
 
     var focusItem = function(num) {
 
-        console.log( "--- focusItem: --- ", num );
+        console.log("focusItem() num: " + num);
 
-        if ( num === null || num < 0) {
+        if (num === null || num === undefined || num < 0) {
 
             console.error("'num' needed!");
             return
@@ -108,7 +107,7 @@
             nav.current.y1 = nav.current.domRect.top;
             nav.current.y2 = nav.current.domRect.bottom;
             removeFocusedClassFromAllElements();
-            Utils.addClass(nav.current.el, "focused"); 
+            Utils.addClass(nav.current.el, "focused");
 
             console.log("selected is: ", num);
 
@@ -129,14 +128,14 @@
         var elmts = nav.listOfFocusableElements;
         var current = nav.current
 
-        nav.focusableTargets = calculateDistances( elmts, current );
+        nav.focusableTargets = calculateDistances(elmts, current);
     }
 
     var calculateDistances = function(arrOfElements, currentEl) {
 
         console.log(" --- calculateDistances()");
-        console.log(" currentEl: ", currentEl );
-        console.log(" arrOfElements: ", arrOfElements );
+        console.log(" currentEl: ", currentEl);
+        console.log(" arrOfElements: ", arrOfElements);
 
         var resultsArr = [];
         for (var i = 0; i < arrOfElements.length; i++) {
@@ -153,9 +152,7 @@
             p.cx = domRect.left + p.w / 2;
             p.cy = domRect.top + p.h / 2;
             p.distance = Utils.getDistance(currentEl.cx, currentEl.cy, p.cx, p.cy);
-
-            if (p.distance === 0) continue; 
-
+            if (p.distance === 0) continue;
             p.angle = Utils.getAngle();
             p.distance_axis_x = Utils.substract(p.cx, currentEl.cx);
             p.distance_axis_y = Utils.substract(p.cy, currentEl.cy);
@@ -167,168 +164,132 @@
         return resultsArr;
     };
 
-    function takeADecision(direction) { 
+    function takeADecision(direction) {
 
-        var FILTERS_GROUP = 1;
+        console.log("takeADecision() direction:" + direction);
+        console.log("Take a decision...");
+        console.log("nav.focusableTargets: ", nav.focusableTargets);
+        console.log("current: ", nav.current);
 
-        if (FILTERS_GROUP === 1) {
+        var decisionIndex = -1;
+        var target = [];
+        var tempTargets = [];
 
-            console.log("Take a decision...");
-            console.log("nav.focusableTargets: ", nav.focusableTargets);
-            console.log("current: ", nav.current);
+        console.info(".a Before filter 1 (Half / Half]), target: ", target);
 
-            var decisionIndex = -1;
-            var target = [];
+        function fliter_1(focusabletargets, focusedEl, direction) {
 
-            console.info(".a Before filter 1 (Half / Half]), target: ", target);
-            for (var i = 0; i < nav.focusableTargets.length; i++) {
+            var arr = [];
 
-                if (direction === 1) { 
-                    console.log("UP");
-                    if (nav.focusableTargets[i].cy < nav.current.cy) target.push(nav.focusableTargets[i]);
-                }
+            if (focusabletargets.length > 1) {
 
-                if (direction === 2) { 
-                    console.log("RIGHT");
-                    if (nav.focusableTargets[i].cx > nav.current.cx) target.push(nav.focusableTargets[i]);
-                }
+                for (var i = 0; i < focusabletargets.length; i++) {
 
-                if (direction === 3) { 
-                    console.log("DOWN");
-                    if (nav.focusableTargets[i].cy > nav.current.cy) target.push(nav.focusableTargets[i]);
-                }
-
-                if (direction === 4) { 
-                    console.log("LEFT");
-                    if (nav.focusableTargets[i].cx < nav.current.cx) target.push(nav.focusableTargets[i]);
-                }
-            }
-
-            console.info(".b After filter 1, target: ", target);
-
-            var selectedObj = null;
-            var minDistance = null;
-
-            for (var i = 0; i < target.length; i++) {
-                if (i === 0) {
-                    selectedObj = target[0];
-                    minDistance = target[0].distance;
-                } else {
-                    if (target[i].distance < minDistance && target[i].distance != 0) {
-                        selectedObj = target[i];
-                        minDistance = target[i].distance;
-                    }
-                }
-            }
-
-            decisionIndex = selectedObj? selectedObj.id: null;
-
-            return decisionIndex; 
-        }
-
-        console.log("nav.focusableTargets:", nav.focusableTargets);
-
-        if (FILTERS_GROUP === 2) {
-
-            var selectedObj = null;
-            var min_distance = null;
-
-            for (var i = 0; i < nav.focusableTargets.length; i++) {
-
-                if (i === 0) {
-                    selectedObj = focusableTargets[0];
-                    min_distance = focusableTargets[0].distance;
-                } else {
-
-                    if (focusableTargets[i].distance < min_distance && focusableTargets[i].distance != 0) {
-                        selectedObj = focusableTargets[i];
-                        min_distance = focusableTargets[i].distance;
+                    if (direction === 'UP') {
+                        if (focusabletargets[i].cy < focusedEl.cy) arr.push(focusabletargets[i]);
                     }
 
+                    if (direction === 'RIGHT') {
+                        if (focusabletargets[i].cx > focusedEl.cx) arr.push(focusabletargets[i]);
+                    }
+
+                    if (direction === 'DOWN') {
+                        if (focusabletargets[i].cy > focusedEl.cy) arr.push(focusabletargets[i]);
+                    }
+
+                    if (direction === 'LEFT') {
+                        if (focusabletargets[i].cx < focusedEl.cx) arr.push(focusabletargets[i]);
+                    }
                 }
+
+            } else {
+
+                return focusabletargets
             }
 
-            decisionIndex = selectedObj.id;
-
-            return decisionIndex; 
-
+            return arr;
         }
 
+        tempTargets = fliter_1(nav.focusableTargets, nav.current, direction);
+
+        function fliter_3(focusabletargets, focusedEl, direction) {
+
+            var arr = [];
+
+            if (focusabletargets.length > 1) {
+
+                for (var i = 0; i < focusabletargets.length; i++) {
+
+                    if (direction === 'UP' || direction === 'DOWN') { 
+
+                        if (focusabletargets[i].cx > focusedEl.x1 && focusabletargets[i].cx < focusedEl.x2) {
+                            arr.push(focusabletargets[i]);
+                        }
+                    }
+
+                    if (direction === 'RIGHT' || direction === 'LEFT') { 
+
+                        if (focusabletargets[i].cy > focusedEl.y1 && focusabletargets[i].cy < focusedEl.y2) {
+                            arr.push(focusabletargets[i]);
+                        }
+                    }
+                }
+
+            } else {
+
+                return focusabletargets
+            }
+
+            if (arr.length === 0) return focusabletargets; 
+
+            return arr;
+        }
+
+        var tempTargets_1 = fliter_3(tempTargets, nav.current, direction);
+        tempTargets = tempTargets_1; 
+
+        function fliter_4(focusabletargets) {
+
+            var el = null;
+            var min = null;
+
+            if (focusabletargets.length > 1) {
+
+                for (var i = 0; i < focusabletargets.length; i++) {
+                    if (i === 0) {
+                        el = focusabletargets[0];
+                        min = focusabletargets[0].distance;
+                    } else {
+                        if (focusabletargets[i].distance < min && focusabletargets[i].distance != 0) {
+                            el = focusabletargets[i];
+                            min = focusabletargets[i].distance;
+                        }
+                    }
+                }
+
+                return el
+
+            } else if (focusabletargets.length === 1) {
+
+                return focusabletargets[0]
+
+            }
+
+            return -1
+        }
+
+        tempTargets = fliter_4(tempTargets, nav.current, direction);
+
+        decisionIndex = tempTargets ? tempTargets.id : null;
+
+        return decisionIndex; 
     }
 
-
-
     var doAction = function() {
-
+        console.log("Default action!");
     };
 
-    var automaticallyGetNextElement = function(arrOfElements, currentElement, movDirection, filterNameOrID) {
-
-        console.log("automaticallyGetNextElement(), arrOfElements:", arrOfElements);
-        console.log("automaticallyGetNextElement(), currentElement:", currentElement);
-        console.log("automaticallyGetNextElement(), movDirection:", movDirection);
-        console.log("automaticallyGetNextElement(), filterNameOrID:", filterNameOrID);
-
-        if (!currentElement) return null;
-
-        var workArr = calculateDistances(arrOfElements, currentElement); 
-        function filter_half_half(arrOfElements, currentElement) {
-            var lon = arrOfElements.length;
-            var filteredElements = [];
-            for (var i = 0; i < arrOfElements.length; i++) {
-                if (direction == 1 || direction == "UP")
-                    if (arrOfElements[i].cy < currentElement.cy) filteredElements.push(arrOfElements[i]);
-                if (direction == 2 || direction == "RIGHT")
-                    if (arrOfElements[i].cx > currentElement.cx) filteredElements.push(arrOfElements[i]);
-                if (direction == 3 || direction == "DOWN")
-                    if (arrOfElements[i].cy > currentElement.cy) filteredElements.push(arrOfElements[i]);
-                if (direction == 4 || direction == "LEFT")
-                    if (arrOfElements[i].cx < currentElement.cx) filteredElements.push(arrOfElements[i]);
-            }
-            return filteredElements;
-        }
-
-        workArr = filter_half_half(workArr, currentElement);
-	
-        function filter_range(arrOfElements, currentElement) {
-            var lon = arrOfElements.length;
-            var filteredElements = [];
-            for (var i = 0; i < arrOfElements.length; i++) {
-                if (direction === 1 || direction === 3 || direction == "UP" || direction == "DOWN")
-                    if (arrOfElements[i].cx > nav.current.x1 && arrOfElements[i].cx < nav.current.x2)
-                        filteredElements.push(arrOfElements[i]);
-
-                if (direction === 2 || direction === 4 || direction == "RIGHT" || direction == "LEFT")
-                    if (arrOfElements[i].cy > nav.current.y1 && arrOfElements[i].cy < nav.current.y2)
-                        filteredElements.push(arrOfElements[i]);
-            }
-            return filteredElements;
-        }
-
-        workArr = filter_range(workArr, currentElement);
-	
-        function filter_nearest(arrOfElements, currentElement) {
-            var lon = arrOfElements.length;
-            var filteredElements = [];
-            for (var i = 0; i < workArr.length; i++) {
-                if (i === 0) {
-                    selectedObj = arrOfElements[0];
-                    minDistance = arrOfElements[0].distance;
-                } else
-                if (arrOfElements[i].distance < minDistance && arrOfElements[i].distance != 0) {
-                    selectedObj = arrOfElements[i];
-                    minDistance = arrOfElements[i].distance;
-                }
-            }
-            return filteredElements;
-        }
-
-        workArr = filter_nearest(workArr, currentElement);
-
-        return workArr; 
-    };
-
-    var focusById = function( targetID ) {
+    var focusById = function(targetID) {
 
         refreshListOfFocusableItems();
         removeFocusedClassFromAllElements();
@@ -342,47 +303,62 @@
     };
 
     window.nav = {
-        current : {
+        current: {
             el: null,
-        }, 
-        previousSelectedElement : null,
-        selectedElement : null,
-        w : null,
-        h : null,
-        cx : null,
-        cy : null,
-        listOfFocusableElements : [],
-        focusableTargets : [],
-        init : function() {
-            checkInit();
-            calculateAllDistances();
         },
-        move : {
+        previousSelectedElement: null,
+        selectedElement: null,
+        w: null,
+        h: null,
+        cx: null,
+        cy: null,
+        listOfFocusableElements: [],
+        focusableTargets: [],
+        actionFunction: function(e) {
+            console.log(e);
+
+            if (e.att_href != null) {
+
+            }
+
+            if (e.att_f_link != null) {
+
+                window.location = e.att_f_link;
+
+            }
+
+            if (e.att_f_func != null) {
+
+                eval(e.att_f_func);
+
+            }
+        },
+        move: {
             up: function() {
                 checkInit();
                 calculateAllDistances();
-                var selectedIndex = takeADecision(1);
+                var selectedIndex = takeADecision('UP');
                 focusItem(selectedIndex);
                 return nav.selectedElement;
             },
             down: function() {
                 checkInit();
                 calculateAllDistances();
-                var selectedIndex = takeADecision(3);
+                var selectedIndex = takeADecision('DOWN');
                 focusItem(selectedIndex);
                 return nav.selectedElement;
             },
             right: function() {
                 checkInit();
                 calculateAllDistances();
-                var selectedIndex = takeADecision(2);
+                var selectedIndex = takeADecision('RIGHT');
                 focusItem(selectedIndex);
                 return nav.selectedElement;
             },
             left: function() {
                 checkInit();
                 calculateAllDistances();
-                var selectedIndex = takeADecision(4);
+                var selectedIndex = takeADecision('LEFT');
                 focusItem(selectedIndex);
                 return nav.selectedElement;
             },
@@ -399,10 +375,20 @@
             calculateAllDistances();
         },
         action: function() {
-            console.log("this.current: ", this.current );
-            var atributo = this.current.el.getAttribute("data-link");
-            console.log("data-link: ", atributo  );
-            window.router.goTo( atributo );
+            console.log("this.current: ", this.current);
+            var att_href = this.current.el.getAttribute("href");
+            var att_f_link = this.current.el.getAttribute("data-focused-link");
+            var att_f_func = this.current.el.getAttribute("data-focused-function");
+            console.log("att_href: ", att_href);
+            console.log("att_f_link: ", att_f_link);
+            console.log("att_f_func: ", att_f_func);
+            var e = {
+                "el": this.current,
+                "att_href": att_href,
+                "att_f_link": att_f_link,
+                "att_f_func": att_f_func
+            }
+            this.actionFunction(e);
         },
         recalculateContainers: function() {
             console.log("recalculateContainers()");
