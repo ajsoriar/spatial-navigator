@@ -1,4 +1,4 @@
-(function () { // An immediately invoked function will wrap our code
+(function() { // An immediately invoked function will wrap our code
 
     "use strict"
 
@@ -19,9 +19,9 @@
         // attach an id if navigable elements do not have one
         for (var i = 0; i < nav.listOfFocusableElements.length; i++) {
             if (nav.listOfFocusableElements[i].id == "") {
-                //nav.listOfFocusableElements[i].id = Date.now() + i;
-                nav.listOfFocusableElements[i].id = i;
-                nav.listOfFocusableElements[i].innerHTML = i;
+                nav.listOfFocusableElements[i].id = Date.now() + i;
+                //nav.listOfFocusableElements[i].id = i;
+                //nav.listOfFocusableElements[i].innerHTML = i;
             }
         }
     };
@@ -69,57 +69,23 @@
             //return dljs.Utils.getDistance(x1,y1,x2,y2);
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         },
-    
+
         getAngle: function(originX, originY, destinyX, destinyY) {
             //return dljs.Utils.getAngle(originX, originY, destinyX, destinyY)
 
         },
 
-        getRandomNum: function (min, max) {
+        getRandomNum: function(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
     };
 
-    /*
-
-    dljs.utils = {};
-
-    dljs.utils.getDistance = function (x1, y1, x2, y2) {
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-    };
-
-    dljs.utils.getSlope = function (x1, y1, x2, y2) {
-        return (y2 - y1) / (x2 - x1);
-    };
-
-    dljs.utils.getRandomNum = function (min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
-
-    dljs.utils.rndColor = function () {
-        var r = this.getRandomNum(0, 255);
-        var g = this.getRandomNum(0, 255);
-        var b = this.getRandomNum(0, 255);
-        var a = 1;
-        return "rgba(" + r + "," + g + "," + b + "," + a + ")";
-    };
-
-    dljs.utils.rndX = function () {
-        return this.getRandomNum(1, window.innerWidth);
-    };
-
-    dljs.utils.rndY = function () {
-        return this.getRandomNum(1, window.innerHeight);
-    };
-
-    */
-
     var focusItem = function(num) {
 
-        console.log( "--- focusItem: --- ", num );
+        console.log("focusItem() num: " + num);
 
-        if ( num === null || num < 0) {
+        if (num === null || num === undefined || num < 0) {
 
             console.error("'num' needed!");
             return
@@ -151,7 +117,7 @@
 
             // 3. Do the selection
             removeFocusedClassFromAllElements();
-            Utils.addClass(nav.current.el, "focused"); 
+            Utils.addClass(nav.current.el, "focused");
 
             console.log("selected is: ", num);
 
@@ -165,8 +131,6 @@
         Utils.removeClassFromElements(document.getElementsByClassName("focusable"), "focused");
     };
 
-    //var focusableTargets = null;
-
     function calculateAllDistances() {
 
         console.log(" --- calculateAllDistances()");
@@ -174,14 +138,14 @@
         var elmts = nav.listOfFocusableElements;
         var current = nav.current
 
-        nav.focusableTargets = calculateDistances( elmts, current );
+        nav.focusableTargets = calculateDistances(elmts, current);
     }
 
     var calculateDistances = function(arrOfElements, currentEl) {
 
         console.log(" --- calculateDistances()");
-        console.log(" currentEl: ", currentEl );
-        console.log(" arrOfElements: ", arrOfElements );
+        console.log(" currentEl: ", currentEl);
+        console.log(" arrOfElements: ", arrOfElements);
 
         var resultsArr = [];
         for (var i = 0; i < arrOfElements.length; i++) {
@@ -198,9 +162,7 @@
             p.cx = domRect.left + p.w / 2;
             p.cy = domRect.top + p.h / 2;
             p.distance = Utils.getDistance(currentEl.cx, currentEl.cy, p.cx, p.cy);
-
-            if (p.distance === 0) continue; //return;
-
+            if (p.distance === 0) continue;
             p.angle = Utils.getAngle();
             p.distance_axis_x = Utils.substract(p.cx, currentEl.cx);
             p.distance_axis_y = Utils.substract(p.cy, currentEl.cy);
@@ -212,267 +174,206 @@
         return resultsArr;
     };
 
-    function takeADecision(direction) { // direction [1,2,3 or 4]
+    function takeADecision(direction) {
 
-        var FILTERS_GROUP = 1;
+        console.log("takeADecision() direction:" + direction);
+        console.log("Take a decision...");
+        console.log("nav.focusableTargets: ", nav.focusableTargets);
+        console.log("current: ", nav.current);
 
-        // -----------------------
-        // --- FILTERS GROUP 1 ---
-        // -----------------------
+        var decisionIndex = -1;
+        var target = [];
+        var tempTargets = [];
 
-        if (FILTERS_GROUP === 1) {
+        console.info(".a Before filter 1 (Half / Half]), target: ", target);
 
-            console.log("Take a decision...");
-            console.log("nav.focusableTargets: ", nav.focusableTargets);
-            console.log("current: ", nav.current);
+        // -----------------------------------------
+        // FILTER 1: Half / Half
+        // -----------------------------------------
 
-            var decisionIndex = -1;
-            var target = [];
+        function fliter_1(focusabletargets, focusedEl, direction) {
 
-            console.info(".a Before filter 1 (Half / Half]), target: ", target);
+            var arr = [];
 
-            // -----------------------------------------
-            // Half / Half
-            // -----------------------------------------
+            if (focusabletargets.length > 1) {
 
-            // FILTER 1:
-            for (var i = 0; i < nav.focusableTargets.length; i++) {
+                for (var i = 0; i < focusabletargets.length; i++) {
 
-                if (direction === 1) { // up
-                    console.log("UP");
-                    if (nav.focusableTargets[i].cy < nav.current.cy) target.push(nav.focusableTargets[i]);
-                }
+                    if (direction === 'UP') {
+                        if (focusabletargets[i].cy < focusedEl.cy) arr.push(focusabletargets[i]);
+                    }
 
-                if (direction === 2) { // right
-                    console.log("RIGHT");
-                    if (nav.focusableTargets[i].cx > nav.current.cx) target.push(nav.focusableTargets[i]);
-                }
+                    if (direction === 'RIGHT') {
+                        if (focusabletargets[i].cx > focusedEl.cx) arr.push(focusabletargets[i]);
+                    }
 
-                if (direction === 3) { // down
-                    console.log("DOWN");
-                    if (nav.focusableTargets[i].cy > nav.current.cy) target.push(nav.focusableTargets[i]);
-                }
+                    if (direction === 'DOWN') {
+                        if (focusabletargets[i].cy > focusedEl.cy) arr.push(focusabletargets[i]);
+                    }
 
-                if (direction === 4) { // left
-                    console.log("LEFT");
-                    if (nav.focusableTargets[i].cx < nav.current.cx) target.push(nav.focusableTargets[i]);
-                }
-            }
-
-            console.info(".b After filter 1, target: ", target);
-
-            //debugger
-
-
-            // -----------------------------------------
-            // Closest to the axis x or Y
-            // -----------------------------------------
-
-            // FILTER 2: Get the closest to the axis x or Y
-
-            // var selectedObj = null;
-            // var minY = null;
-
-            // for (var i = 0; i < target.length; i++) {
-            //     if (i === 0){
-            //         selectedObj = target[0]; //.distance_axis_y;
-            //         minY = target[0].distance_axis_y;
-            //     } else {
-            //         if( target[i].distance_axis_y < minY ){
-            //             selectedObj = target[i]; //.distance_axis_y;
-            //             minY = target[i].distance_axis_y;
-            //         }
-            //     }
-
-            // }
-
-            // console.log(".c After filter 2, decision was taken: ", selectedObj );
-
-
-            // FILTER 3:  Get the ones whose center is in a range, constraint to boundaries
-
-            /*
-
-            console.log("nav.focusableTargets: ", nav.focusableTargets);
-
-            for (var i = 0; i < nav.focusableTargets.length; i++) {
-
-                //console.log("i: ", i);
-
-                if (direction === 1 || direction === 3) { // up
-
-                    if (nav.focusableTargets[i].cx > nav.current.x1 && nav.focusableTargets[i].cx < nav.current.x2) {
-                        target.push(nav.focusableTargets[i]);
+                    if (direction === 'LEFT') {
+                        if (focusabletargets[i].cx < focusedEl.cx) arr.push(focusabletargets[i]);
                     }
                 }
 
-                if (direction === 2 || direction === 4) { // right
+            } else {
 
-                    if (nav.focusableTargets[i].cy > nav.current.y1 && nav.focusableTargets[i].cy < nav.current.y2) {
-                        target.push(nav.focusableTargets[i]);
-                    }
-                }
+                return focusabletargets
             }
 
-            console.log("target: ", target);
-
-            */
-
-            //debugger
-
-            // SELECTOR 4: Get the lower distance value
-
-            var selectedObj = null;
-            var minDistance = null;
-
-            for (var i = 0; i < target.length; i++) {
-                if (i === 0) {
-                    selectedObj = target[0];
-                    minDistance = target[0].distance;
-                } else {
-                    if (target[i].distance < minDistance && target[i].distance != 0) {
-                        selectedObj = target[i];
-                        minDistance = target[i].distance;
-                    }
-                }
-            }
-
-            // SELECTOR 5: Random
-
-            //debugger
-
-            // ... var rnd = Math.floor(Math.random() * nav.listOfFocusableElements.length ) + 0;
-
-
-            //console.log(".c After filter 2, decision was taken: ", selectedObj);
-
-            decisionIndex = selectedObj? selectedObj.id: null;
-
-            return decisionIndex; // Returns an element
+            return arr;
         }
 
-        // -----------------------
-        // --- FILTERS GROUP 2 ---
-        // -----------------------
+        tempTargets = fliter_1(nav.focusableTargets, nav.current, direction);
 
-        console.log("nav.focusableTargets:", nav.focusableTargets);
+        // -----------------------------------------
+        // FILTER 2: Closest to the axis x or Y
+        // -----------------------------------------
 
-        if (FILTERS_GROUP === 2) {
+        /*
+        function fliter_1(focusabletargets, focusedEl, direction) {
 
-            var selectedObj = null;
-            var min_distance = null;
+            if (nav.focusableTargets.length > 1) {
 
-            for (var i = 0; i < nav.focusableTargets.length; i++) {
+                // var selectedObj = null;
+                // var minY = null;
 
-                if (i === 0) {
-                    selectedObj = focusableTargets[0];
-                    min_distance = focusableTargets[0].distance;
-                } else {
+                // for (var i = 0; i < target.length; i++) {
+                //     if (i === 0){
+                //         selectedObj = target[0]; //.distance_axis_y;
+                //         minY = target[0].distance_axis_y;
+                //     } else {
+                //         if( target[i].distance_axis_y < minY ){
+                //             selectedObj = target[i]; //.distance_axis_y;
+                //             minY = target[i].distance_axis_y;
+                //         }
+                //     }
 
-                    if (focusableTargets[i].distance < min_distance && focusableTargets[i].distance != 0) {
-                        selectedObj = focusableTargets[i];
-                        min_distance = focusableTargets[i].distance;
+                // }
+
+                // console.log(".c After filter 2, decision was taken: ", selectedObj );
+
+            }
+        }
+        */
+
+        // ----------------------------------------------------------------------------------
+        // FILTER 3:  Get the ones whose center is in a range, constraint to boundaries
+        // ----------------------------------------------------------------------------------
+
+        function fliter_3(focusabletargets, focusedEl, direction) {
+
+            var arr = [];
+
+            if (focusabletargets.length > 1) {
+
+                for (var i = 0; i < focusabletargets.length; i++) {
+
+                    if (direction === 'UP' || direction === 'DOWN') { // Vertical filter
+
+                        if (focusabletargets[i].cx > focusedEl.x1 && focusabletargets[i].cx < focusedEl.x2) {
+                            arr.push(focusabletargets[i]);
+                        }
                     }
 
+                    if (direction === 'RIGHT' || direction === 'LEFT') { // Horizontal filter
+
+                        if (focusabletargets[i].cy > focusedEl.y1 && focusabletargets[i].cy < focusedEl.y2) {
+                            arr.push(focusabletargets[i]);
+                        }
+                    }
                 }
+
+            } else {
+
+                return focusabletargets
             }
 
-            decisionIndex = selectedObj.id;
+            if (arr.length === 0) return focusabletargets; // if this filter does not find elements return the elements from the previous filter.
 
-            return decisionIndex; // Returns an element
-
+            return arr;
         }
 
+        // ----------------------------------------------------------------------------------
+        // FILTER 3_1:  Get the ones that cross a constraint to boundaries
+        // ----------------------------------------------------------------------------------
+
+        var tempTargets_1 = fliter_3(tempTargets, nav.current, direction);
+        //var tempTargets_2 = fliter_3_1(tempTargets, nav.current, direction);
+        tempTargets = tempTargets_1; // + tempTargets_2
+
+        // -----------------------------------------
+        // FILTER 4: Get the lower distance value
+        // -----------------------------------------
+
+        function fliter_4(focusabletargets) {
+
+            var el = null;
+            var min = null;
+
+            if (focusabletargets.length > 1) {
+
+                for (var i = 0; i < focusabletargets.length; i++) {
+                    if (i === 0) {
+                        el = focusabletargets[0];
+                        min = focusabletargets[0].distance;
+                    } else {
+                        if (focusabletargets[i].distance < min && focusabletargets[i].distance != 0) {
+                            el = focusabletargets[i];
+                            min = focusabletargets[i].distance;
+                        }
+                    }
+                }
+
+                return el
+
+            } else if (focusabletargets.length === 1) {
+
+                return focusabletargets[0]
+
+            }
+
+            return -1
+        }
+
+        tempTargets = fliter_4(tempTargets, nav.current, direction);
+
+        // -----------------------------------------
+        // FILTER 5: Horizontal, 1st from left to right.
+        // -----------------------------------------
+
+        // -----------------------------------------
+        // FILTER 6: Vertical, 1st from top to bottom.
+        // -----------------------------------------
+
+        // -----------------------------------------
+        // FILTER 7: Random.
+        // -----------------------------------------
+
+        //debugger
+
+        // ... var rnd = Math.floor(Math.random() * nav.listOfFocusableElements.length ) + 0;
+
+
+        //console.log(".c After filter 2, decision was taken: ", selectedObj);
+
+        decisionIndex = tempTargets ? tempTargets.id : null;
+
+        return decisionIndex; // Returns an element
     }
 
-
-
     var doAction = function() {
+        console.log("Default action!");
 
+        //look for href
     };
 
-    var automaticallyGetNextElement = function(arrOfElements, currentElement, movDirection, filterNameOrID) {
-
-        console.log("automaticallyGetNextElement(), arrOfElements:", arrOfElements);
-        console.log("automaticallyGetNextElement(), currentElement:", currentElement);
-        console.log("automaticallyGetNextElement(), movDirection:", movDirection);
-        console.log("automaticallyGetNextElement(), filterNameOrID:", filterNameOrID);
-
-        if (!currentElement) return null;
-
-        var workArr = calculateDistances(arrOfElements, currentElement); //  arrOfElements;
-
-        // FILTER 1: Half / Half
-        function filter_half_half(arrOfElements, currentElement) {
-            var lon = arrOfElements.length;
-            var filteredElements = [];
-            for (var i = 0; i < arrOfElements.length; i++) {
-                if (direction == 1 || direction == "UP")
-                    if (arrOfElements[i].cy < currentElement.cy) filteredElements.push(arrOfElements[i]);
-                if (direction == 2 || direction == "RIGHT")
-                    if (arrOfElements[i].cx > currentElement.cx) filteredElements.push(arrOfElements[i]);
-                if (direction == 3 || direction == "DOWN")
-                    if (arrOfElements[i].cy > currentElement.cy) filteredElements.push(arrOfElements[i]);
-                if (direction == 4 || direction == "LEFT")
-                    if (arrOfElements[i].cx < currentElement.cx) filteredElements.push(arrOfElements[i]);
-            }
-            return filteredElements;
-        }
-
-        workArr = filter_half_half(workArr, currentElement);
-
-        // ------------
-        // Range filter
-	    // ------------
-	
-        function filter_range(arrOfElements, currentElement) {
-            var lon = arrOfElements.length;
-            var filteredElements = [];
-            for (var i = 0; i < arrOfElements.length; i++) {
-                if (direction === 1 || direction === 3 || direction == "UP" || direction == "DOWN")
-                    if (arrOfElements[i].cx > nav.current.x1 && arrOfElements[i].cx < nav.current.x2)
-                        filteredElements.push(arrOfElements[i]);
-
-                if (direction === 2 || direction === 4 || direction == "RIGHT" || direction == "LEFT")
-                    if (arrOfElements[i].cy > nav.current.y1 && arrOfElements[i].cy < nav.current.y2)
-                        filteredElements.push(arrOfElements[i]);
-            }
-            return filteredElements;
-        }
-
-        workArr = filter_range(workArr, currentElement);
-
-        // ----------------
-        // Distances filter
-	    // ----------------
-	
-        function filter_nearest(arrOfElements, currentElement) {
-            var lon = arrOfElements.length;
-            var filteredElements = [];
-            for (var i = 0; i < workArr.length; i++) {
-                if (i === 0) {
-                    selectedObj = arrOfElements[0];
-                    minDistance = arrOfElements[0].distance;
-                } else
-                if (arrOfElements[i].distance < minDistance && arrOfElements[i].distance != 0) {
-                    selectedObj = arrOfElements[i];
-                    minDistance = arrOfElements[i].distance;
-                }
-            }
-            return filteredElements;
-        }
-
-        workArr = filter_nearest(workArr, currentElement);
-
-        return workArr; // filteredElements
-    };
-
-    var focusById = function( targetID ) {
+    var focusById = function(targetID) {
 
         refreshListOfFocusableItems();
         removeFocusedClassFromAllElements();
         var num = null;
-    
+
         // attach an id if navigable elements do not have one
         for (var i = 0; i < nav.listOfFocusableElements.length; i++) {
             if (nav.listOfFocusableElements[i].id == targetID) {
@@ -483,27 +384,48 @@
     };
 
     window.nav = {
-        current : {
+        current: {
             el: null,
-        }, 
-        previousSelectedElement : null,
-        selectedElement : null,
-        w : null,
-        h : null,
-        cx : null,
-        cy : null,
-        listOfFocusableElements : [],
-        focusableTargets : [],
-        init : function() {
-            checkInit();
-            calculateAllDistances();
         },
-        move : {
+        previousSelectedElement: null,
+        selectedElement: null,
+        w: null,
+        h: null,
+        cx: null,
+        cy: null,
+        listOfFocusableElements: [],
+        focusableTargets: [],
+        // init: function() {
+        //     checkInit();
+        //     calculateAllDistances();
+        // },
+        actionFunction: function(e) {
+            console.log(e);
+
+            if (e.att_href != null) {
+
+                // Search javascript string. If found exec the function
+
+            }
+
+            if (e.att_f_link != null) {
+
+                window.location = e.att_f_link;
+
+            }
+
+            if (e.att_f_func != null) {
+
+                eval(e.att_f_func);
+
+            }
+        },
+        move: {
             up: function() {
                 //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
-                var selectedIndex = takeADecision(1);
+                var selectedIndex = takeADecision('UP');
                 focusItem(selectedIndex);
                 //this.afterMove();
                 return nav.selectedElement;
@@ -512,7 +434,7 @@
                 //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
-                var selectedIndex = takeADecision(3);
+                var selectedIndex = takeADecision('DOWN');
                 focusItem(selectedIndex);
                 //this.afterMove();
                 return nav.selectedElement;
@@ -521,7 +443,7 @@
                 //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
-                var selectedIndex = takeADecision(2);
+                var selectedIndex = takeADecision('RIGHT');
                 focusItem(selectedIndex);
                 //this.afterMove();
                 return nav.selectedElement;
@@ -530,7 +452,7 @@
                 //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
-                var selectedIndex = takeADecision(4);
+                var selectedIndex = takeADecision('LEFT');
                 focusItem(selectedIndex);
                 //this.afterMove();
                 return nav.selectedElement;
@@ -548,10 +470,20 @@
             calculateAllDistances();
         },
         action: function() {
-            console.log("this.current: ", this.current );
-            var atributo = this.current.el.getAttribute("data-link");
-            console.log("data-link: ", atributo  );
-            window.router.goTo( atributo );
+            console.log("this.current: ", this.current);
+            var att_href = this.current.el.getAttribute("href");
+            var att_f_link = this.current.el.getAttribute("data-focused-link");
+            var att_f_func = this.current.el.getAttribute("data-focused-function");
+            console.log("att_href: ", att_href);
+            console.log("att_f_link: ", att_f_link);
+            console.log("att_f_func: ", att_f_func);
+            var e = {
+                "el": this.current,
+                "att_href": att_href,
+                "att_f_link": att_f_link,
+                "att_f_func": att_f_func
+            }
+            this.actionFunction(e);
         },
         recalculateContainers: function() {
             console.log("recalculateContainers()");
