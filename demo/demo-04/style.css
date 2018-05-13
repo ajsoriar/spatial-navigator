@@ -98,7 +98,7 @@ ul {
 /* -------------------- */
 .focusable {
     background-color: #111111;
-    box-shadow: 0 0 1px 1px #3F3F3F;
+    _box-shadow: 0 0 1px 1px #3F3F3F;
     color: gray;
 }
 
@@ -200,6 +200,7 @@ ul {
 }
 
 .focused {
-  outline: 10px solid #00ffff;
+  outline: 2px solid #00ff00;
+  box-shadow: 0 0 7px 6px #ff0000;
   z-index: 9000;
 }
