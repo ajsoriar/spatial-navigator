@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <script src="./../../src/spatial-navigator.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+        var bodyOnLoad = function(){
+          console.log('body.onload');
+
+          nav.reset();
+        }
+    </script>
+    <script src="./index.js"></script>    
+    <script>
+
+        var myLink = function( value ) {
+          console.log("value:", value );
+        }
+
+    </script>
+  </head>
+
+  <body class="focusable-root" onload="bodyOnLoad()">
+    <canvas id="bgCanvas"></canvas>
+
+    <div style="position: absolute; top: 0; left: 0" class="container_1" data-stategy="default">
+      <div>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-2" style="position: absolute; top: 10px; left: 100px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-2" style="position: absolute; top: 10px; left: 200px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-2" style="position: absolute; top: 10px; left: 400px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-2" style="position: absolute; top: 10px; left: 500px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-2" style="position: absolute; top: 10px; left: 600px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-2" style="position: absolute; top: 10px; left: 800px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-2" style="position: absolute; top: 10px; left: 900px;">link</a>
+      </div>
+    </div>
+    
+    <div style="position: absolute; top: 70px; left: 0" class="container_2 focusable-container" data-stategy="default">
+      <div>
+        <div data-action-link="App.doStuff"  class="focusable ajsr-box-3" style="position: absolute; top: 10px; left: 0px;" data-ank="www.google.com">link</div>
+        <div data-action-link="App.doStuff"  class="focusable ajsr-box-3" style="position: absolute; top: 10px; left: 200px;">link</div>
+        <div data-action-link="App.doStuff"  class="focusable ajsr-box-3" style="position: absolute; top: 10px; left: 400px;">link</div>
+        <div data-action-link="App.doStuff"  class="focusable ajsr-box-3" style="position: absolute; top: 10px; left: 600px;">link</div>
+        <div data-action-link="App.doStuff"  class="focusable ajsr-box-3" style="position: absolute; top: 10px; left: 800px;">link</div>
+        <div data-action-link="App.doStuff"  class="focusable ajsr-box-3" style="position: absolute; top: 10px; left: 1200px;">link</div>
+      </div>
+    </div>
+    
+    <div style="position: absolute; top: 140; left: 30" class="container_3" data-stategy="default">
+      <div>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 10px; left: 100px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 90px; left: 200px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 150px; left: 150px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 250px; left: 200px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 270px; left: 100px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 300px; left: 150px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 350px; left: 300px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 400px; left: 500px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 90px; left: 300px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 160px; left: 200px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 100px; left: 600px;">link</a>
+        <a href="javascript:myLink('123')"  class="focusable ajsr-box-1" style="position: absolute; top: 200px; left: 700px;">link</a>
+      </div>
+
+    </div>
+
+    <script src="../../node_modules/purple-console/src/purple-console.js"></script>
+    
+  </body>
+
+</html>

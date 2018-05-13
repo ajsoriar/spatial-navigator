@@ -1,13 +1,24 @@
 /* Styles go here */
 
+html {
+    width: 100%;
+    height: 100%;
+    margin:0;
+    padding: 0;
+}
+
 body{
-  /*
-  background-image: url("./ground-block.svg");
-  background-size: 100px;
-  */
-  background-color: #111111;
-  font-size: 12px;
-  overflow: hidden;
+
+    background-image: url("./bg-005.gif");
+    background-size: 100px;
+
+    background-color: #111111;
+    font-size: 12px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin:0;
+    padding: 0;
 }
 
 #gamePlayCanvas {
@@ -19,12 +30,11 @@ body{
 }
 
 .block{
-  /* border: 1px solid black; */
-  /*display: block;*/
-  display: inline-block;
-  overflow: hidden;
-  position: absolute;
-  
+    /* border: 1px solid black; */
+    /*display: block;*/
+    display: inline-block;
+    overflow: hidden;
+    position: absolute;
 }
 
 .scn-0{
@@ -98,6 +108,42 @@ li, ul{
 /* -------------------- */
 .selectable.is-selected {
   background-color: black;
-  box-shadow: 0 0 10px 7px gray;
+  box-shadow: 0 0 10px 7px #00ff40;
 }
-
+/*
+.selectable.selected {
+  background-color: black;
+  box-shadow: 0 0 10px 7px #00ff40;
+}
+*/
+.btn-demo{
+  font-family: sans-serif;
+  font-weight: 600;
+  font-size: 8px;
+  line-height: 43px;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
+  background-color: aquamarine;
+  position: absolute;
+}
+.btn-demo:hover{
+  background-color: #ffeb3b;
+}
+#btn-up {
+  left: 55px;
+  top: 5px;
+}
+#btn-down {
+  left: 55px;
+  top: 55px;
+}
+#btn-right {
+  left: 105px;
+  top: 55px;
+}
+#btn-left {
+  left: 5px;
+  top: 55px;
+}
