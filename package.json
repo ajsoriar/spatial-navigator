@@ -1,6 +1,6 @@
 {
   "name": "spatial-navigator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JS spatial navigation library",
   "main": "dist/spatial-navigator.min.js",
   "directories": {

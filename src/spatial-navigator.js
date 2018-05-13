@@ -19,7 +19,9 @@
         // attach an id if navigable elements do not have one
         for (var i = 0; i < nav.listOfFocusableElements.length; i++) {
             if (nav.listOfFocusableElements[i].id == "") {
-                nav.listOfFocusableElements[i].id = Date.now() + i;
+                //nav.listOfFocusableElements[i].id = Date.now() + i;
+                nav.listOfFocusableElements[i].id = i;
+                nav.listOfFocusableElements[i].innerHTML = i;
             }
         }
     };
@@ -61,9 +63,57 @@
             if (a === b) return 0;
             if (a > b) return (a - b);
             return (b - a)
+        },
+
+        getDistance: function(x1, y1, x2, y2) {
+            //return dljs.Utils.getDistance(x1,y1,x2,y2);
+            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        },
+    
+        getAngle: function(originX, originY, destinyX, destinyY) {
+            //return dljs.Utils.getAngle(originX, originY, destinyX, destinyY)
+
+        },
+
+        getRandomNum: function (min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
     };
+
+    /*
+
+    dljs.utils = {};
+
+    dljs.utils.getDistance = function (x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    };
+
+    dljs.utils.getSlope = function (x1, y1, x2, y2) {
+        return (y2 - y1) / (x2 - x1);
+    };
+
+    dljs.utils.getRandomNum = function (min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
+    dljs.utils.rndColor = function () {
+        var r = this.getRandomNum(0, 255);
+        var g = this.getRandomNum(0, 255);
+        var b = this.getRandomNum(0, 255);
+        var a = 1;
+        return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+    };
+
+    dljs.utils.rndX = function () {
+        return this.getRandomNum(1, window.innerWidth);
+    };
+
+    dljs.utils.rndY = function () {
+        return this.getRandomNum(1, window.innerHeight);
+    };
+
+    */
 
     var focusItem = function(num) {
 
@@ -147,11 +197,11 @@
             p.h = domRect.bottom - domRect.top;
             p.cx = domRect.left + p.w / 2;
             p.cy = domRect.top + p.h / 2;
-            p.distance = getDistance(currentEl.cx, currentEl.cy, p.cx, p.cy);
+            p.distance = Utils.getDistance(currentEl.cx, currentEl.cy, p.cx, p.cy);
 
             if (p.distance === 0) continue; //return;
 
-            p.angle = getAngle();
+            p.angle = Utils.getAngle();
             p.distance_axis_x = Utils.substract(p.cx, currentEl.cx);
             p.distance_axis_y = Utils.substract(p.cy, currentEl.cy);
             p.slope = null;
@@ -211,6 +261,8 @@
 
             console.info(".b After filter 1, target: ", target);
 
+            //debugger
+
 
             // -----------------------------------------
             // Closest to the axis x or Y
@@ -239,6 +291,8 @@
 
             // FILTER 3:  Get the ones whose center is in a range, constraint to boundaries
 
+            /*
+
             console.log("nav.focusableTargets: ", nav.focusableTargets);
 
             for (var i = 0; i < nav.focusableTargets.length; i++) {
@@ -262,6 +316,10 @@
 
             console.log("target: ", target);
 
+            */
+
+            //debugger
+
             // SELECTOR 4: Get the lower distance value
 
             var selectedObj = null;
@@ -281,10 +339,12 @@
 
             // SELECTOR 5: Random
 
+            //debugger
+
             // ... var rnd = Math.floor(Math.random() * nav.listOfFocusableElements.length ) + 0;
 
 
-            console.log(".c After filter 2, decision was taken: ", selectedObj);
+            //console.log(".c After filter 2, decision was taken: ", selectedObj);
 
             decisionIndex = selectedObj? selectedObj.id: null;
 
@@ -325,13 +385,7 @@
 
     }
 
-    function getDistance(x1, y1, x2, y2) {
-        //return dljs.Utils.getDistance(x1,y1,x2,y2);
-    }
 
-    function getAngle(originX, originY, destinyX, destinyY) {
-        //return dljs.Utils.getAngle(originX, originY, destinyX, destinyY)
-    }
 
     var doAction = function() {
 
@@ -534,40 +588,3 @@
         focusById: focusById
     };
 }());
-
-document.addEventListener('keydown', function (e) {
-
-    console.log("keydown e.which:", e);
-
-    switch (e.which) {
-
-        case 37:
-            nav.move.left();
-            break;
-
-        case 38:
-            nav.move.up();
-            break;
-
-        case 39:
-            nav.move.right();
-            break;
-
-        case 40:
-            nav.move.down();
-            break;
-
-        case 13:
-            nav.action();
-            break;
-
-        case 8:
-            // var x = history.length;
-            // ajsrConsole.log(x);
-            // window.history.back();
-            break;
-        default:
-            // do nothing!
-    }
-
-});

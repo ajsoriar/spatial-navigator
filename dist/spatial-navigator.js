@@ -1,7 +1,7 @@
 /**
  * spatial-navigator
  * JS spatial navigation library.
- * @version 0.1.0 - 2019-09-11
+ * @version 0.1.1 - 2018-05-13
  * @link https://github.com/ajsoriar/spatial-navigator
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -26,7 +26,8 @@
         nav.listOfFocusableElements = document.getElementsByClassName(cssLabel);
         for (var i = 0; i < nav.listOfFocusableElements.length; i++) {
             if (nav.listOfFocusableElements[i].id == "") {
-                nav.listOfFocusableElements[i].id = Date.now() + i;
+                nav.listOfFocusableElements[i].id = i;
+                nav.listOfFocusableElements[i].innerHTML = i;
             }
         }
     };
@@ -63,6 +64,18 @@
             if (a === b) return 0;
             if (a > b) return (a - b);
             return (b - a)
+        },
+
+        getDistance: function(x1, y1, x2, y2) {
+            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        },
+    
+        getAngle: function(originX, originY, destinyX, destinyY) {
+
+        },
+
+        getRandomNum: function (min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
     };
@@ -139,11 +152,11 @@
             p.h = domRect.bottom - domRect.top;
             p.cx = domRect.left + p.w / 2;
             p.cy = domRect.top + p.h / 2;
-            p.distance = getDistance(currentEl.cx, currentEl.cy, p.cx, p.cy);
+            p.distance = Utils.getDistance(currentEl.cx, currentEl.cy, p.cx, p.cy);
 
             if (p.distance === 0) continue; 
 
-            p.angle = getAngle();
+            p.angle = Utils.getAngle();
             p.distance_axis_x = Utils.substract(p.cx, currentEl.cx);
             p.distance_axis_y = Utils.substract(p.cy, currentEl.cy);
             p.slope = null;
@@ -193,27 +206,6 @@
 
             console.info(".b After filter 1, target: ", target);
 
-            console.log("nav.focusableTargets: ", nav.focusableTargets);
-
-            for (var i = 0; i < nav.focusableTargets.length; i++) {
-
-                if (direction === 1 || direction === 3) { 
-
-                    if (nav.focusableTargets[i].cx > nav.current.x1 && nav.focusableTargets[i].cx < nav.current.x2) {
-                        target.push(nav.focusableTargets[i]);
-                    }
-                }
-
-                if (direction === 2 || direction === 4) { 
-
-                    if (nav.focusableTargets[i].cy > nav.current.y1 && nav.focusableTargets[i].cy < nav.current.y2) {
-                        target.push(nav.focusableTargets[i]);
-                    }
-                }
-            }
-
-            console.log("target: ", target);
-
             var selectedObj = null;
             var minDistance = null;
 
@@ -228,9 +220,6 @@
                     }
                 }
             }
-
-
-            console.log(".c After filter 2, decision was taken: ", selectedObj);
 
             decisionIndex = selectedObj? selectedObj.id: null;
 
@@ -267,11 +256,7 @@
 
     }
 
-    function getDistance(x1, y1, x2, y2) {
-    }
 
-    function getAngle(originX, originY, destinyX, destinyY) {
-    }
 
     var doAction = function() {
 
@@ -451,36 +436,3 @@
         focusById: focusById
     };
 }());
-
-document.addEventListener('keydown', function (e) {
-
-    console.log("keydown e.which:", e);
-
-    switch (e.which) {
-
-        case 37:
-            nav.move.left();
-            break;
-
-        case 38:
-            nav.move.up();
-            break;
-
-        case 39:
-            nav.move.right();
-            break;
-
-        case 40:
-            nav.move.down();
-            break;
-
-        case 13:
-            nav.action();
-            break;
-
-        case 8:
-            break;
-        default:
-    }
-
-});
