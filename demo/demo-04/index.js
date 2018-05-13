@@ -2,7 +2,7 @@
 // Resize
 // --------------------------
 
-window.addEventListener("resize", function(){
+window.addEventListener("resize", function() {
     console.log("resize()!");
     var height = document.body.clientHeight;
     var width = document.body.clientWidth;
@@ -24,7 +24,7 @@ window.addEventListener("resize", function(){
 // Keydown
 // --------------------------
 
-document.addEventListener('keydown', function (e) {
+window.addEventListener('keydown', function(e) {
 
     console.log("keydown e.which:", e);
 
@@ -55,7 +55,7 @@ document.addEventListener('keydown', function (e) {
             // ajsrConsole.log(x);
             // window.history.back();
             break;
-            
+
         default:
             // do nothing!
     }
