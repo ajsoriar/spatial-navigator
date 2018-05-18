@@ -1,7 +1,7 @@
 /**
  * spatial-navigator
  * JS spatial navigation library.
- * @version 1.0.0 - 2018-05-13
+ * @version 1.1.0 - 2018-05-19
  * @link https://github.com/ajsoriar/spatial-navigator
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -212,7 +212,7 @@
 
         tempTargets = fliter_1(nav.focusableTargets, nav.current, direction);
 
-        function fliter_3(focusabletargets, focusedEl, direction) {
+        function fliter_3_0(focusabletargets, focusedEl, direction) {
 
             var arr = [];
 
@@ -245,8 +245,41 @@
             return arr;
         }
 
-        var tempTargets_1 = fliter_3(tempTargets, nav.current, direction);
-        tempTargets = tempTargets_1; 
+        function fliter_3_1(focusabletargets, focusedEl, direction) {
+
+            var arr = [];
+
+            if (focusabletargets.length > 1) {
+
+                for (var i = 0; i < focusabletargets.length; i++) {
+
+                    if (direction === 'UP' || direction === 'DOWN') { 
+
+                        if (focusabletargets[i].x2 > focusedEl.x1 && focusabletargets[i].x1 < focusedEl.x2) {
+                            arr.push(focusabletargets[i]);
+                        }
+                    }
+
+                    if (direction === 'RIGHT' || direction === 'LEFT') { 
+
+                        if (focusabletargets[i].y2 > focusedEl.y1 && focusabletargets[i].y1 < focusedEl.y2) {
+                            arr.push(focusabletargets[i]);
+                        }
+                    }
+                }
+
+            } else {
+
+                return focusabletargets
+            }
+
+            if (arr.length === 0) return focusabletargets; 
+
+            return arr;
+        }
+        var tempTargets_2 = fliter_3_1(tempTargets, nav.current, direction);
+
+        tempTargets = tempTargets_2; 
 
         function fliter_4(focusabletargets) {
 
