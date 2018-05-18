@@ -258,10 +258,10 @@
         */
 
         // ----------------------------------------------------------------------------------
-        // FILTER 3:  Get the ones whose center is in a range, constraint to boundaries
+        // FILTER 3_0:  Get the ones whose center is in a range, constraint to boundaries
         // ----------------------------------------------------------------------------------
 
-        function fliter_3(focusabletargets, focusedEl, direction) {
+        function fliter_3_0(focusabletargets, focusedEl, direction) {
 
             var arr = [];
 
@@ -298,9 +298,45 @@
         // FILTER 3_1:  Get the ones that cross a constraint to boundaries
         // ----------------------------------------------------------------------------------
 
-        var tempTargets_1 = fliter_3(tempTargets, nav.current, direction);
-        //var tempTargets_2 = fliter_3_1(tempTargets, nav.current, direction);
-        tempTargets = tempTargets_1; // + tempTargets_2
+        function fliter_3_1(focusabletargets, focusedEl, direction) {
+
+            var arr = [];
+
+            if (focusabletargets.length > 1) {
+
+                for (var i = 0; i < focusabletargets.length; i++) {
+
+                    if (direction === 'UP' || direction === 'DOWN') { // Vertical filter
+
+                        if (focusabletargets[i].x2 > focusedEl.x1 && focusabletargets[i].x1 < focusedEl.x2) {
+                            arr.push(focusabletargets[i]);
+                        }
+                    }
+
+                    if (direction === 'RIGHT' || direction === 'LEFT') { // Horizontal filter
+
+                        if (focusabletargets[i].y2 > focusedEl.y1 && focusabletargets[i].y1 < focusedEl.y2) {
+                            arr.push(focusabletargets[i]);
+                        }
+                    }
+                }
+
+            } else {
+
+                return focusabletargets
+            }
+
+            if (arr.length === 0) return focusabletargets; // if this filter does not find elements return the elements from the previous filter.
+
+            return arr;
+        }
+
+        // ----------------------------------------------------------------------------------
+
+        //var tempTargets_1 = fliter_3_0(tempTargets, nav.current, direction);
+        var tempTargets_2 = fliter_3_1(tempTargets, nav.current, direction);
+
+        tempTargets = tempTargets_2; // + tempTargets_2
 
         // -----------------------------------------
         // FILTER 4: Get the lower distance value
