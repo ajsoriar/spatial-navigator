@@ -1,0 +1,221 @@
+/* Styles go here */
+
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+
+    background-image: url("./bg-005.gif");
+    background-size: 100px;
+
+    background-color: #111111;
+    font-size: 12px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#gamePlayCanvas {
+    border: 1px solid red;
+    position: relative;
+    display: block;
+    width: 90vw;
+    height: 90vw;
+}
+
+.block {
+    /* border: 1px solid black; */
+    /*display: block;*/
+    display: inline-block;
+    overflow: hidden;
+    position: absolute;
+}
+
+.scn-0 {
+    background-color: white;
+}
+
+.scn-1 {
+    background-color: white;
+    background-image: url("./images/ground-block.svg");
+    background-size: 100%;
+}
+
+.scn-2 {
+    background-color: #00ff00;
+    background-color: white;
+    background-image: url("./images/stairs.svg");
+    background-size: 100%;
+}
+
+.scn-3 {
+    background-color: #00ffff;
+    background-color: white;
+    background-image: url("./images/slider.svg");
+    background-size: 100%;
+}
+
+.scn-4 {
+    background-color: #ffff00;
+    background-color: white;
+    background-image: url("./images/oxigen.svg");
+    background-size: 100%;
+}
+
+.scn-5 {
+    background-color: #ff00ff;
+    background-color: white;
+    background-image: url("./images/key.svg");
+    background-size: 100%;
+}
+
+.scn-6 {
+    background-color: #ff0000;
+    background-color: white;
+    background-image: url("./ground-block.svg");
+    background-size: 100%;
+}
+
+.man {
+    border: 1px solid black;
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    background-color: blue;
+}
+
+li,
+ul {
+    list-style: none;
+}
+
+/* -------------------- */
+.focusable {
+    background-color: #111111;
+    _box-shadow: 0 0 1px 1px #3F3F3F;
+    color: gray;
+}
+
+.focusable.ajsr-box-1 {
+    width: 50px;
+    height: 60px;
+}
+
+.focusable.ajsr-box-2 {
+    width: 90px;
+    height: 50px;
+}
+
+.focusable.ajsr-box-3 {
+    width: 200px;
+    height: 30px;
+}
+
+/* -------------------- */
+.focusable.is-selected {
+    background-color: black;
+    box-shadow: 0 0 10px 7px #00ff40;
+}
+
+.btn-demo {
+    font-family: sans-serif;
+    font-weight: 600;
+    font-size: 8px;
+    line-height: 43px;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
+    background-color: aquamarine;
+    position: absolute;
+    cursor: pointer;
+}
+
+.btn-demo:hover {
+    background-color: #ffeb3b;
+}
+
+#btn-up {
+    left: 55px;
+    top: 5px;
+}
+
+#btn-down {
+    left: 55px;
+    top: 55px;
+}
+
+#btn-right {
+    left: 105px;
+    top: 55px;
+}
+
+#btn-left {
+    left: 5px;
+    top: 55px;
+}
+
+/* -------- */
+
+.container_1 {
+    display: block;
+    border: 0px dashed red;
+    outline: 2px dashed orange;
+    overflow: visible;
+    width: inherit;
+    height: inherit;
+    padding: 0;
+    margin: 0;
+    background-color: #ffa5002e;
+}
+
+.container_2 {
+    display: block;
+    border: 0px dashed red;
+    outline: 2px dashed #FFC107;
+    overflow: visible;
+    width: inherit;
+    height: inherit;
+    padding: 0;
+    margin: 0;
+    background-color: #ffeb3b66;
+}
+
+.container_3 {
+    display: block;
+    border: 0px dashed red;
+    outline: 2px dashed #3F51B5;
+    overflow: visible;
+    width: inherit;
+    height: inherit;
+    padding: 0;
+    margin: 0;
+    background-color: #00b0ff75;
+}
+
+.focused {
+  outline: 2px solid #00ff00;
+  box-shadow: 0 0 7px 6px #ff0000;
+  z-index: 9000;
+}
+
+.pop-content {
+    position: absolute;
+    top: 30px;
+    left: 130px;
+    width: 500px;
+    height: 300px;
+    z-index: 200;
+    border: 1px solid white;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.abs{
+    position: absolute;
+}
