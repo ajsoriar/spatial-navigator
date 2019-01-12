@@ -6,6 +6,9 @@
   "author": "asr <ajsoriar@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    
+  },
+  "devDependencies": {
     "div-lines": "^1.2.0"
   }
 }
