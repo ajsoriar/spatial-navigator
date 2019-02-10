@@ -12,4 +12,5 @@ node_modules
 bower_components
 *.log
 .map
-yarn.lock
+.vscode
+.jsbeautifyrc
