@@ -3,28 +3,62 @@
     "use strict"
 
     var checkInit = function() { // select one focusable item if none is selected
-        if (nav.current.el === null) {
-            refreshListOfFocusableItems();
-            var rnd = Math.floor(Math.random() * nav.listOfFocusableElements.length) + 0; // TODO: Select the first one! or look for a default item...
-            focusItem(rnd);
-        }
+        if (nav.current.el != null) return;
+        // var previousFocusedItemExists = null;
+        // if ( previousFocusedItemExists ) {
+
+        // } else {
+
+        // }
+        refreshFocusableMap();
+        var rnd = Math.floor(Math.random() * nav.listOfFocusableElements.length) + 0; // TODO: Select the first one! or look for a default item...
+        focusItem(rnd);
     };
 
-    var refreshListOfFocusableItems = function(cssLabel) { // Updates nav.listOfFocusableElements 
+    var refreshFocusableMap = function() {
+        refreshListOfFocusableItems();
+        refreshListOfFocusableGroups();
+    };
 
-        if (!cssLabel) cssLabel = 'focusable';
+    var refreshListOfFocusableItems = function(className) { // Updates nav.listOfFocusableElements 
 
-        nav.listOfFocusableElements = document.getElementsByClassName(cssLabel);
+        nav.listOfFocusableElements = getListOffocusableItems();
 
         // attach an id if navigable elements do not have one
         for (var i = 0; i < nav.listOfFocusableElements.length; i++) {
-            if (nav.listOfFocusableElements[i].id == "") {
+            if (nav.listOfFocusableElements[i].id === "") {
                 nav.listOfFocusableElements[i].id = Date.now() + i;
-                //nav.listOfFocusableElements[i].id = i;
-                //nav.listOfFocusableElements[i].innerHTML = i;
+                //nav.listOfFocusableElements[i].id = i; 
             }
+            //nav.listOfFocusableElements[i].innerHTML = i;
         }
     };
+
+    var refreshListOfFocusableGroups = function(className) { // Updates nav.listOfFocusableElements 
+
+        nav.listOfFocusableGroups = getListOffocusableGroups();
+
+        // attach an id if navigable elements do not have one
+        for (var i = 0; i < nav.listOfFocusableGroups.length; i++) {
+            if (nav.listOfFocusableGroups[i].id === "") {
+                nav.listOfFocusableGroups[i].id = Date.now() + i;
+                //nav.listOfFocusableElements[i].id = i;  
+            }
+            //nav.listOfFocusableGroups[i].innerHTML = nav.listOfFocusableElements[i].innerHTML + '<div class="debug-number">'+ i +'</div>';
+        }
+    };
+
+    var getListOffocusableItems = function( domEl, className ){
+        if (!className) className = 'focusable';
+        if (!domEl) domEl = document;
+        return domEl.getElementsByClassName(className);
+    }
+
+    var getListOffocusableGroups = function( domEl, className ){
+        if (!className) className = 'focusable-group';
+        if (!domEl) domEl = document;
+        return domEl.getElementsByClassName(className);
+    }
 
     var Utils = {
 
@@ -73,10 +107,6 @@
         getAngle: function(originX, originY, destinyX, destinyY) {
             //return dljs.Utils.getAngle(originX, originY, destinyX, destinyY)
 
-        },
-
-        getRandomNum: function(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
     };
@@ -85,14 +115,15 @@
 
         console.log("focusItem() num: " + num);
 
-        if (num === null || num === undefined || num < 0) {
+        if (num === undefined || num === null || num < 0) {
 
             console.error("'num' needed!");
             return
         }
 
-        console.log(nav.listOfFocusableElements.length + " focusable elements.");
-        console.log("nav.listOfFocusableElements: ", nav.listOfFocusableElements);
+        //console.log(nav.listOfFocusableElements.length + " focusable elements.");
+        //console.log("nav.listOfFocusableElements: ", nav.listOfFocusableElements);
+        //console.log("nav.listOfFocusableGroups: ", nav.listOfFocusableGroups);
 
         if (nav.listOfFocusableElements.length > 0) {
 
@@ -174,7 +205,11 @@
         return resultsArr;
     };
 
-    function takeADecision(direction) {
+    var getFocusableGroupName = function(  ){
+
+    }
+
+    function takeADecision(direction) { // Returns a DOM id, 
 
         console.log("takeADecision() direction:" + direction);
         console.log("Take a decision...");
@@ -185,11 +220,43 @@
         var target = [];
         var tempTargets = [];
 
-        console.info(".a Before filter 1 (Half / Half]), target: ", target);
+        // -----------------------------------------
+        // FILTER 0: by group
+        // -----------------------------------------
+
+        // this.curretGroup
+
+        console.info(".a Before filter 0 (by group), target: ", target);
+
+        function fliter_0(focusabletargets, focusedEl, direction, focusableGroups, focusableGroupName) {
+            
+            if ( focusableGroupName === null ) return focusabletargets;
+
+            //var groupEl = document.getElementById(this.curretGroup);
+
+            var lon = focusableGroups.length;
+            var i = 0;
+            for( i; i < lon; i++){
+                var att_f_group_name = focusableGroups[i].getAttribute("data-focus-group-name");
+                if ( focusableGroupName === att_f_group_name ) {
+                    break;
+                }
+            }
+
+            var arr = getListOffocusableItems(focusableGroups[i]);
+
+            return arr;
+        }
+
+        //var focusableGroupName = nav.curretGroup; //getFocusableGroupName();
+
+        tempTargets = fliter_0(nav.focusableTargets, nav.current, direction, nav.listOfFocusableGroups, nav.curretGroup );
 
         // -----------------------------------------
         // FILTER 1: Half / Half
         // -----------------------------------------
+        
+        console.info(".a Before filter 1 (Half / Half), target: ", target);
 
         function fliter_1(focusabletargets, focusedEl, direction) {
 
@@ -423,25 +490,30 @@
         current: {
             el: null,
         },
+        init: function() {
+            //checkInit();
+            //calculateAllDistances();
+        },
+        reset: function() {
+            this.current.el = null;
+            checkInit();
+            calculateAllDistances();
+        },
+        curretGroup: null,
         previousSelectedElement: null,
-        selectedElement: null,
         w: null,
         h: null,
         cx: null,
         cy: null,
         listOfFocusableElements: [],
         focusableTargets: [],
-        // init: function() {
-        //     checkInit();
-        //     calculateAllDistances();
-        // },
+        getFocusableGroupName: null,
         actionFunction: function(e) {
             console.log(e);
 
             if (e.att_href != null) {
 
                 // Search javascript string. If found exec the function
-
             }
 
             if (e.att_f_link != null) {
@@ -455,6 +527,7 @@
                 eval(e.att_f_func);
 
             }
+
         },
         move: {
             up: function() {
@@ -464,7 +537,7 @@
                 var selectedIndex = takeADecision('UP');
                 focusItem(selectedIndex);
                 //this.afterMove();
-                return nav.selectedElement;
+                return nav.current.el;
             },
             down: function() {
                 //this.beforeMove();
@@ -473,7 +546,7 @@
                 var selectedIndex = takeADecision('DOWN');
                 focusItem(selectedIndex);
                 //this.afterMove();
-                return nav.selectedElement;
+                return nav.current.el;
             },
             right: function() {
                 //this.beforeMove();
@@ -482,7 +555,7 @@
                 var selectedIndex = takeADecision('RIGHT');
                 focusItem(selectedIndex);
                 //this.afterMove();
-                return nav.selectedElement;
+                return nav.current.el;
             },
             left: function() {
                 //this.beforeMove();
@@ -491,7 +564,7 @@
                 var selectedIndex = takeADecision('LEFT');
                 focusItem(selectedIndex);
                 //this.afterMove();
-                return nav.selectedElement;
+                return nav.current.el;
             },
             rnd: function() {
 
@@ -500,10 +573,11 @@
 
             }
         },
-        reset: function() {
-            this.current.el = null;
-            checkInit();
-            calculateAllDistances();
+        groupBy: function(groupName){
+            this.curretGroup = groupName;
+        },
+        ungroup: function() {
+            this.curretGroup = null;
         },
         action: function() {
             console.log("this.current: ", this.current);
@@ -521,12 +595,12 @@
             }
             this.actionFunction(e);
         },
-        recalculateContainers: function() {
-            console.log("recalculateContainers()");
-        },
-        applyRandomDecision: function() {
-            console.log("applyRandomDecision()");
-        },
+        // recalculateContainers: function() {
+        //     console.log("recalculateContainers()");
+        // },
+        // applyRandomDecision: function() {
+        //     console.log("applyRandomDecision()");
+        // },
         getNextElement: function(arrOfElements, currentElement, movDirection, filterNameOrID) {
 
             console.log("getNextElement(), arrOfElements:", arrOfElements);
@@ -553,6 +627,49 @@
             nav.current.el = domElement;
             Utils.addClass(nav.current.el, "focused");
         },
-        focusById: focusById
+        focusById: focusById,
+        map:{
+            draw: function(){
+
+                var arr = nav.focusableTargets, //nav.listOfFocusableElements,
+                    lon = arr.length,
+                    i = 0,
+                    el = document.getElementById('map-el'),
+                    str = '',
+                    scale = 0.3;
+                
+                if (el === null){
+                    el = document.createElement('div');
+                    el.id = 'map-el';
+                    el.style.cssText = ''+
+                        'position:absolute;'+
+                        'top:0;left:0;'+
+                        'width:100%;'+
+                        'height:100%;'+
+                        'opacity:1;'+
+                        'z-index:1000;'+
+                        'background:red;'+
+                        'transform: scale('+ scale +');'+
+                        'transform-origin: 0 0;';
+
+                    document.body.appendChild(el);
+                }
+
+                for (i; i < lon; i++){
+                    console.log(arr[i]);
+                    var d = arr[i];
+                    str += '<div style="position:absolute; top:'+ d.y1 +'px;left:'+ d.x1 +'px; width:'+ d.w +'px;height:'+ d.h +'px; background-color: cyan; outline: 1px solid blue;">'+ i +'</div>' 
+                }
+
+                el.innerHTML = str;
+                
+            },
+            clear: function(){
+                var el = document.getElementById('map-el');
+                if ( el === null) return
+                document.body.removeChild(el);
+            }            
+        } 
+ 
     };
 }());
