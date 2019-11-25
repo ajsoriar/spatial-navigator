@@ -1,7 +1,6 @@
 # spatial-navigator [![Build Status](https://travis-ci.org/ajsoriar/spatial-navigator.svg?branch=master)](https://travis-ci.org/ajsoriar/spatial-navigator)
 
 [![npm version](https://badge.fury.io/js/spatial-navigator.svg)](https://badge.fury.io/js/spatial-navigator)
-[![Bower version](https://badge.fury.io/bo/spatial-navigator.svg)](https://badge.fury.io/bo/spatial-navigator)
 
 spatial-navigator is a javascript spatial navigation library
 
@@ -12,7 +11,7 @@ spatial-navigator is a javascript spatial navigation library
 - NPM: **npm install spatial-navigator**
 - Bower: **bower install spatial-navigator**
 - Yarn: **yarn add spatial-navigator**
-- github: **https://github.com/ajsoriar/spatial-navigator**
+- github: **<https://github.com/ajsoriar/spatial-navigator>**
 <!--- - NuGet: **PM> Install-Package spatial-navigator** -->
 
 ### 2 Initialize the plugin by referencing the necessary files
@@ -35,8 +34,21 @@ nav.move.right();
 nav.move.down();
 
 nav.action();
+
+nav.focusById(1574711748163);
+
+nav.groupBy('pop');
+undefined
+nav.curretGroup;
+"pop"
+nav.ungroup();
+undefined
+
+nav.map.draw()
+
+nav.map.clear()
 ```
 
 ### 4 License
 
-spatial-navigator is [MIT licensed](./LICENSE).
+spatial-navigator is [MIT licensed](./LICENSE)
