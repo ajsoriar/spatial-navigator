@@ -20,7 +20,7 @@
         refreshListOfFocusableGroups();
     };
 
-    var refreshListOfFocusableItems = function(className) { // Updates nav.listOfFocusableElements 
+    var refreshListOfFocusableItems = function(className) { // Updates nav.listOfFocusableElements
 
         nav.listOfFocusableElements = getListOffocusableItems();
 
@@ -28,13 +28,13 @@
         for (var i = 0; i < nav.listOfFocusableElements.length; i++) {
             if (nav.listOfFocusableElements[i].id === "") {
                 nav.listOfFocusableElements[i].id = Date.now() + i;
-                //nav.listOfFocusableElements[i].id = i; 
+                //nav.listOfFocusableElements[i].id = i;
             }
             //nav.listOfFocusableElements[i].innerHTML = i;
         }
     };
 
-    var refreshListOfFocusableGroups = function(className) { // Updates nav.listOfFocusableElements 
+    var refreshListOfFocusableGroups = function(className) { // Updates nav.listOfFocusableElements
 
         nav.listOfFocusableGroups = getListOffocusableGroups();
 
@@ -42,7 +42,7 @@
         for (var i = 0; i < nav.listOfFocusableGroups.length; i++) {
             if (nav.listOfFocusableGroups[i].id === "") {
                 nav.listOfFocusableGroups[i].id = Date.now() + i;
-                //nav.listOfFocusableElements[i].id = i;  
+                //nav.listOfFocusableElements[i].id = i;
             }
             //nav.listOfFocusableGroups[i].innerHTML = nav.listOfFocusableElements[i].innerHTML + '<div class="debug-number">'+ i +'</div>';
         }
@@ -111,6 +111,48 @@
 
     };
 
+    var Filters = {
+        nearestTo: function(x,y,targets){
+
+        },
+        filter_nearest_to: function(x,y, targets) {
+
+        }
+    };
+
+    var focusArea = function(areaId, v, h ){
+
+        if ( areaId === undefined || areaId === null ) {
+            console.error("div layer id needed!");
+            return -1
+        }
+
+        if ( v === null ) v = 'top';
+
+        if ( h === null ) h = 'left';
+
+        var el = document.getElementById( areaId );
+        if ( el === null ) return -1
+
+        // get position of top-left corner of el
+        var area = {
+            corner: {
+                x: 0,
+                y: 0
+            }
+        };
+
+        // get all elemient centers in the area of el
+        refreshFocusableMap();
+        var targets = calculateAllDistances();
+        targets = Filters.filter_targets_in_area(a,b,targets);
+
+        // get the nearest center to top-left corner
+        Filters.filter_nearest_to(area.corner.x, area.corner.y, tatgets);
+    };
+
+    //topLeft: focusInArea, //(areaId,'top','le //ft')
+
     var focusItem = function(num) {
 
         console.log("focusItem() num: " + num);
@@ -118,7 +160,7 @@
         if (num === undefined || num === null || num < 0) {
 
             console.error("'num' needed!");
-            return
+            return -1
         }
 
         //console.log(nav.listOfFocusableElements.length + " focusable elements.");
@@ -209,7 +251,7 @@
 
     }
 
-    function takeADecision(direction) { // Returns a DOM id, 
+    function takeADecision(direction) { // Returns a DOM id,
 
         console.log("takeADecision() direction:" + direction);
         console.log("Take a decision...");
@@ -229,7 +271,7 @@
         console.info(".a Before filter 0 (by group), target: ", target);
 
         function fliter_0(focusabletargets, focusedEl, direction, focusableGroups, focusableGroupName) {
-            
+
             if ( focusableGroupName === null ) return focusabletargets;
 
             //var groupEl = document.getElementById(this.curretGroup);
@@ -255,7 +297,7 @@
         // -----------------------------------------
         // FILTER 1: Half / Half
         // -----------------------------------------
-        
+
         console.info(".a Before filter 1 (Half / Half), target: ", target);
 
         function fliter_1(focusabletargets, focusedEl, direction) {
@@ -512,22 +554,18 @@
             console.log(e);
 
             if (e.att_href != null) {
-
                 // Search javascript string. If found exec the function
             }
 
             if (e.att_f_link != null) {
 
                 window.location = e.att_f_link;
-
             }
 
             if (e.att_f_func != null) {
 
                 eval(e.att_f_func);
-
             }
-
         },
         move: {
             up: function() {
@@ -628,6 +666,11 @@
             Utils.addClass(nav.current.el, "focused");
         },
         focusById: focusById,
+        focus: {
+            byId: focusById,
+            topRight: focusArea,
+            topLeft: focusArea
+        },
         map:{
             draw: function(){
 
@@ -637,7 +680,7 @@
                     el = document.getElementById('map-el'),
                     str = '',
                     scale = 0.3;
-                
+
                 if (el === null){
                     el = document.createElement('div');
                     el.id = 'map-el';
@@ -658,18 +701,17 @@
                 for (i; i < lon; i++){
                     console.log(arr[i]);
                     var d = arr[i];
-                    str += '<div style="position:absolute; top:'+ d.y1 +'px;left:'+ d.x1 +'px; width:'+ d.w +'px;height:'+ d.h +'px; background-color: cyan; outline: 1px solid blue;">'+ i +'</div>' 
+                    str += '<div style="position:absolute; top:'+ d.y1 +'px;left:'+ d.x1 +'px; width:'+ d.w +'px;height:'+ d.h +'px; background-color: cyan; outline: 1px solid blue;">'+ i +'</div>'
                 }
 
                 el.innerHTML = str;
-                
             },
             clear: function(){
                 var el = document.getElementById('map-el');
                 if ( el === null) return
                 document.body.removeChild(el);
-            }            
-        } 
- 
+            }
+        }
+
     };
 }());
