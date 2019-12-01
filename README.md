@@ -44,9 +44,13 @@ nav.curretGroup;
 nav.ungroup();
 undefined
 
-nav.map.draw()
+nav.map.draw();
 
-nav.map.clear()
+nav.map.clear();
+
+nav.focusArea('zone-1', 'bottom', 'right');
+
+nav.focusArea('zone-1'); // top left
 ```
 
 ### 4 License
