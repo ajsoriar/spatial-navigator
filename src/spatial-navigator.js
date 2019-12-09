@@ -703,8 +703,8 @@
         action: function() {
             console.log("this.current: ", this.current);
             var att_href = this.current.el.getAttribute("href");
-            var att_f_link = this.current.el.getAttribute("data-focused-link");
-            var att_f_func = this.current.el.getAttribute("data-focused-function");
+            var att_f_link = this.current.el.getAttribute("data-focus-action-link");
+            var att_f_func = this.current.el.getAttribute("data-focus-action-function");
             console.log("att_href: ", att_href);
             console.log("att_f_link: ", att_f_link);
             console.log("att_f_func: ", att_f_func);

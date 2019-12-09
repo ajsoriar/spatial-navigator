@@ -20,7 +20,7 @@ spatial-navigator is a javascript spatial navigation library
 <script src="./../../src/spatial-navigator.js"></script>
 ```
 
-### 3 Example
+### 3 Examples
 
 ```javascript
 nav.reset();
@@ -32,6 +32,9 @@ nav.move.up();
 nav.move.right();
 
 nav.move.down();
+
+<div class="btn focusable" data-focus-action-link="https://www.subidote.com">OK</div>
+<div class="btn focusable" data-focus-action-function="console.log('LOL')">OK</div>
 
 nav.action();
 
