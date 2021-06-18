@@ -1,7 +1,7 @@
 /**
  * spatial-navigator
  * JS spatial navigation library.
- * @version 1.1.2 - 2021-06-18
+ * @version 1.1.3 - 2021-06-18
  * @link https://github.com/ajsoriar/spatial-navigator
  * @author Andres J. Soria R. <ajsoriar@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
