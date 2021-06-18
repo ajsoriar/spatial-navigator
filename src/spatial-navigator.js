@@ -1,8 +1,10 @@
-(function() { // An immediately invoked function will wrap our code
+(function () {
+    // An immediately invoked function will wrap our code
 
-    "use strict"
+    'use strict';
 
-    var checkInit = function() { // select one focusable item if none is selected
+    var checkInit = function () {
+        // select one focusable item if none is selected
         if (nav.current.el != null) return;
         // var previousFocusedItemExists = null;
         // if ( previousFocusedItemExists ) {
@@ -15,18 +17,19 @@
         focusItem(rnd);
     };
 
-    var refreshFocusableMap = function() {
+    var refreshFocusableMap = function () {
         refreshListOfFocusableItems();
         refreshListOfFocusableGroups();
     };
 
-    var refreshListOfFocusableItems = function(className) { // Updates nav.listOfFocusableElements
+    var refreshListOfFocusableItems = function (className) {
+        // Updates nav.listOfFocusableElements
 
         nav.listOfFocusableElements = getListOffocusableItems();
 
         // attach an id if navigable elements do not have one
         for (var i = 0; i < nav.listOfFocusableElements.length; i++) {
-            if (nav.listOfFocusableElements[i].id === "") {
+            if (nav.listOfFocusableElements[i].id === '') {
                 nav.listOfFocusableElements[i].id = Date.now() + i;
                 //nav.listOfFocusableElements[i].id = i;
             }
@@ -34,13 +37,14 @@
         }
     };
 
-    var refreshListOfFocusableGroups = function(className) { // Updates nav.listOfFocusableElements
+    var refreshListOfFocusableGroups = function (className) {
+        // Updates nav.listOfFocusableElements
 
         nav.listOfFocusableGroups = getListOffocusableGroups();
 
         // attach an id if navigable elements do not have one
         for (var i = 0; i < nav.listOfFocusableGroups.length; i++) {
-            if (nav.listOfFocusableGroups[i].id === "") {
+            if (nav.listOfFocusableGroups[i].id === '') {
                 nav.listOfFocusableGroups[i].id = Date.now() + i;
                 //nav.listOfFocusableElements[i].id = i;
             }
@@ -48,99 +52,96 @@
         }
     };
 
-    var getListOffocusableItems = function( domEl, className ){
+    var getListOffocusableItems = function (domEl, className) {
         if (!className) className = 'focusable';
         if (!domEl) domEl = document;
         return domEl.getElementsByClassName(className);
-    }
+    };
 
-    var getListOffocusableGroups = function( domEl, className ){
+    var getListOffocusableGroups = function (domEl, className) {
         if (!className) className = 'focusable-group';
         if (!domEl) domEl = document;
         return domEl.getElementsByClassName(className);
-    }
+    };
 
     var Utils = {
-
         // Add Class Cross-browser solution: The classList property is not supported in Internet Explorer 9. The following code will work in all browsers:
 
-        addClass: function(domEl, styleName) {
+        addClass: function (domEl, styleName) {
             if (domEl === null || styleName === null) return -1;
             var element = domEl,
-                name, arr;
-            arr = element.className.split(" ");
+                name,
+                arr;
+            arr = element.className.split(' ');
             if (arr.indexOf(styleName) == -1) {
-                element.className += " " + styleName;
+                element.className += ' ' + styleName;
             }
         },
 
         // Remove Class Cross-browser solution: The classList property is not supported in Internet Explorer 9. The following code will work in all browsers:
 
-        removeClass: function(domEl, styleName) {
+        removeClass: function (domEl, styleName) {
             if (domEl === null || styleName === null) return -1;
             var element = domEl;
             //element.className = element.className.replace("/\b" + styleName + "\b/g", "");
             element.classList.remove(styleName);
         },
 
-        removeClassFromElements: function(arrOfElements, styleName) {
+        removeClassFromElements: function (arrOfElements, styleName) {
             for (var i = 0; i < arrOfElements.length; i++) {
                 this.removeClass(arrOfElements[i], styleName);
             }
         },
 
-        getRandomNum: function(min, max) {
+        getRandomNum: function (min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         },
 
-        substract: function(a, b) {
+        substract: function (a, b) {
             if (a === b) return 0;
-            if (a > b) return (a - b);
-            return (b - a)
+            if (a > b) return a - b;
+            return b - a;
         },
 
-        getDistance: function(x1, y1, x2, y2) {
+        getDistance: function (x1, y1, x2, y2) {
             //return dljs.Utils.getDistance(x1,y1,x2,y2);
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         },
 
-        getAngle: function(originX, originY, destinyX, destinyY) {
+        getAngle: function (originX, originY, destinyX, destinyY) {
             //return dljs.Utils.getAngle(originX, originY, destinyX, destinyY)
-
         }
-
     };
 
     var Filters = {
-        filter_targets_in_area_by_max_min: function(x1, y1, x2, y2, targets) {
-            console.log("fom: ", x1 , ", ", y1 );
-            console.log("to: ", x2 , ", ", y2 );
+        filter_targets_in_area_by_max_min: function (x1, y1, x2, y2, targets) {
+            console.log('fom: ', x1, ', ', y1);
+            console.log('to: ', x2, ', ', y2);
             var arr = [],
                 lon = targets.length;
 
-            for (var i = 0; i < lon; i++){
-                if ( targets[i].x1 >= x1 && targets[i].x2 <= x2  ){
-                    if ( targets[i].y1 >= y1 && targets[i].y2 <= y2  ){
-                        arr.push( targets[i]);
+            for (var i = 0; i < lon; i++) {
+                if (targets[i].x1 >= x1 && targets[i].x2 <= x2) {
+                    if (targets[i].y1 >= y1 && targets[i].y2 <= y2) {
+                        arr.push(targets[i]);
                     }
                 }
             }
 
             return arr;
         },
-        filter_targets_in_area_by_center_xy: function(x1, y1, x2, y2, targets) {
+        filter_targets_in_area_by_center_xy: function (x1, y1, x2, y2, targets) {
             var arr = [];
-            for (var i = 0; i < targets.length; i++){
-                if ( targets[i].cx >= x1 && targets[i].cx <= x2  ){
-                    if ( targets[i].cy >= y1 && targets[i].cy <= y2  ){
-                        arr.push( targets[i]);
+            for (var i = 0; i < targets.length; i++) {
+                if (targets[i].cx >= x1 && targets[i].cx <= x2) {
+                    if (targets[i].cy >= y1 && targets[i].cy <= y2) {
+                        arr.push(targets[i]);
                     }
                 }
             }
             return arr;
         },
-        filter_targets_nearest_to_xy: function(x,y, targets) {
-
+        filter_targets_nearest_to_xy: function (x, y, targets) {
             var current = null,
                 i = 0,
                 lon = targets.length,
@@ -149,15 +150,11 @@
 
             for (i; i < lon; i++) {
                 if (i === 0) {
-
                     current = targets[0];
-                    ld = Utils.getDistance ( targets[0].cx, targets[0].cy, x, y );
-
+                    ld = Utils.getDistance(targets[0].cx, targets[0].cy, x, y);
                 } else {
-
-                    d = Utils.getDistance ( targets[i].cx, targets[i].cy, x, y );
-                    if ( d < ld ) {
-
+                    d = Utils.getDistance(targets[i].cx, targets[i].cy, x, y);
+                    if (d < ld) {
                         current = targets[i];
                         ld = d;
                     }
@@ -168,19 +165,20 @@
         }
     };
 
-    var focusArea = function(areaId, v, h ){ // focusArea('id', 'top', 'left');
+    var focusArea = function (areaId, v, h) {
+        // focusArea('id', 'top', 'left');
 
-        if ( areaId === undefined || areaId === null ) {
-            console.error("div layer id needed!");
-            return -1
+        if (areaId === undefined || areaId === null) {
+            console.error('div layer id needed!');
+            return -1;
         }
 
-        if ( !v ) v = 'top';
+        if (!v) v = 'top';
 
-        if ( !h ) h = 'left';
+        if (!h) h = 'left';
 
-        var el = document.getElementById( areaId );
-        if ( el === null ) return -1
+        var el = document.getElementById(areaId);
+        if (el === null) return -1;
 
         var domRect = el.getBoundingClientRect();
         var p = {};
@@ -192,23 +190,26 @@
         // get position of top-left corner of el
         var corner = {};
 
-        if ( v === 'top' ){
-            if ( h === 'left'){
-                console.log("top left");
+        if (v === 'top') {
+            if (h === 'left') {
+                console.log('top left');
                 corner.x = p.x1;
                 corner.y = p.y1;
-            } else { // right
-                console.log("top right");
+            } else {
+                // right
+                console.log('top right');
                 corner.x = p.x2;
                 corner.y = p.y1;
             }
-        } else { // bottom
-            if ( h === 'left'){
-                console.log("bottom left");
+        } else {
+            // bottom
+            if (h === 'left') {
+                console.log('bottom left');
                 corner.x = p.x1;
                 corner.y = p.y2;
-            } else { // right
-                console.log("bottom right");
+            } else {
+                // right
+                console.log('bottom right');
                 corner.x = p.x2;
                 corner.y = p.y2;
             }
@@ -222,23 +223,21 @@
         // get the nearest center to top-left corner
         var targetElement = Filters.filter_targets_nearest_to_xy(corner.x, corner.y, targets);
 
-        console.log( targetElement );
+        console.log(targetElement);
 
-        nav.focusById( targetElement.id );
+        nav.focusById(targetElement.id);
 
         return targetElement;
     };
 
     //topLeft: focusArea, //(areaId,'top','le //ft')
 
-    var focusItem = function(num) {
-
-        console.log("focusItem() num: " + num);
+    var focusItem = function (num) {
+        console.log('focusItem() num: ' + num);
 
         if (num === undefined || num === null || num < 0) {
-
             console.error("'num' needed!");
-            return -1
+            return -1;
         }
 
         //console.log(nav.listOfFocusableElements.length + " focusable elements.");
@@ -246,7 +245,6 @@
         //console.log("nav.listOfFocusableGroups: ", nav.listOfFocusableGroups);
 
         if (nav.listOfFocusableElements.length > 0) {
-
             // 1. Paint numbers inside navigble elements
 
             //for (var i = 0; i < nav.listOfFocusableElements.length; i++) nav.listOfFocusableElements[i].innerHTML = i;
@@ -268,36 +266,32 @@
 
             // 3. Do the selection
             removeFocusedClassFromAllElements();
-            Utils.addClass(nav.current.el, "focused");
+            Utils.addClass(nav.current.el, 'focused');
 
-            console.log("selected is: ", num);
-
+            console.log('selected is: ', num);
         } else {
-
-            console.log("No focusable elements");
+            console.log('No focusable elements');
         }
     };
 
-    var removeFocusedClassFromAllElements = function() {
-        Utils.removeClassFromElements(document.getElementsByClassName("focusable"), "focused");
+    var removeFocusedClassFromAllElements = function () {
+        Utils.removeClassFromElements(document.getElementsByClassName('focusable'), 'focused');
     };
 
     function calculateAllDistances() {
-
-        console.log(" --- calculateAllDistances()");
+        console.log(' --- calculateAllDistances()');
 
         var elmts = nav.listOfFocusableElements;
-        var current = nav.current
+        var current = nav.current;
 
         nav.focusableTargets = calculateDistances(elmts, current);
 
         return nav.focusableTargets;
     }
 
-    var calculateDistances = function(arrOfElements, currentEl) {
-
-        console.log(" calculateDistances()");
-        console.log(" currentEl: ", currentEl);
+    var calculateDistances = function (arrOfElements, currentEl) {
+        console.log(' calculateDistances()');
+        console.log(' currentEl: ', currentEl);
         //console.log(" arrOfElements: ", arrOfElements);
 
         var resultsArr = [];
@@ -325,21 +319,20 @@
             resultsArr.push(p);
         }
 
-        console.log(" resultsArr: ", resultsArr);
+        console.log(' resultsArr: ', resultsArr);
 
         return resultsArr;
     };
 
-    var getFocusableGroupName = function(  ){
+    var getFocusableGroupName = function () {};
 
-    }
+    function takeADecision(direction) {
+        // Returns a DOM id,
 
-    function takeADecision(direction) { // Returns a DOM id,
-
-        console.log("takeADecision() direction:" + direction);
-        console.log("Take a decision...");
-        console.log("nav.focusableTargets: ", nav.focusableTargets);
-        console.log("current: ", nav.current);
+        console.log('takeADecision() direction:' + direction);
+        console.log('Take a decision...');
+        console.log('nav.focusableTargets: ', nav.focusableTargets);
+        console.log('current: ', nav.current);
 
         var decisionIndex = -1;
         var target = [];
@@ -351,19 +344,18 @@
 
         // this.curretGroup
 
-        console.info(".a Before filter 0 (by group), target: ", target);
+        console.info('.a Before filter 0 (by group), target: ', target);
 
         function fliter_0(focusabletargets, focusedEl, direction, focusableGroups, focusableGroupName) {
-
-            if ( focusableGroupName === null ) return focusabletargets;
+            if (focusableGroupName === null) return focusabletargets;
 
             //var groupEl = document.getElementById(this.curretGroup);
 
             var lon = focusableGroups.length;
             var i = 0;
-            for( i; i < lon; i++){
-                var att_f_group_name = focusableGroups[i].getAttribute("data-focus-group-name");
-                if ( focusableGroupName === att_f_group_name ) {
+            for (i; i < lon; i++) {
+                var att_f_group_name = focusableGroups[i].getAttribute('data-focus-group-name');
+                if (focusableGroupName === att_f_group_name) {
                     break;
                 }
             }
@@ -375,22 +367,19 @@
 
         //var focusableGroupName = nav.curretGroup; //getFocusableGroupName();
 
-        tempTargets = fliter_0(nav.focusableTargets, nav.current, direction, nav.listOfFocusableGroups, nav.curretGroup );
+        tempTargets = fliter_0(nav.focusableTargets, nav.current, direction, nav.listOfFocusableGroups, nav.curretGroup);
 
         // -----------------------------------------
         // FILTER 1: Half / Half
         // -----------------------------------------
 
-        console.info(".a Before filter 1 (Half / Half), target: ", target);
+        console.info('.a Before filter 1 (Half / Half), target: ', target);
 
         function fliter_1(focusabletargets, focusedEl, direction) {
-
             var arr = [];
 
             if (focusabletargets.length > 1) {
-
                 for (var i = 0; i < focusabletargets.length; i++) {
-
                     if (direction === 'UP') {
                         if (focusabletargets[i].cy < focusedEl.cy) arr.push(focusabletargets[i]);
                     }
@@ -407,10 +396,8 @@
                         if (focusabletargets[i].cx < focusedEl.cx) arr.push(focusabletargets[i]);
                     }
                 }
-
             } else {
-
-                return focusabletargets
+                return focusabletargets;
             }
 
             return arr;
@@ -454,31 +441,28 @@
         // ----------------------------------------------------------------------------------
 
         function fliter_3_0(focusabletargets, focusedEl, direction) {
-
             var arr = [];
 
             if (focusabletargets.length > 1) {
-
                 for (var i = 0; i < focusabletargets.length; i++) {
-
-                    if (direction === 'UP' || direction === 'DOWN') { // Vertical filter
+                    if (direction === 'UP' || direction === 'DOWN') {
+                        // Vertical filter
 
                         if (focusabletargets[i].cx > focusedEl.x1 && focusabletargets[i].cx < focusedEl.x2) {
                             arr.push(focusabletargets[i]);
                         }
                     }
 
-                    if (direction === 'RIGHT' || direction === 'LEFT') { // Horizontal filter
+                    if (direction === 'RIGHT' || direction === 'LEFT') {
+                        // Horizontal filter
 
                         if (focusabletargets[i].cy > focusedEl.y1 && focusabletargets[i].cy < focusedEl.y2) {
                             arr.push(focusabletargets[i]);
                         }
                     }
                 }
-
             } else {
-
-                return focusabletargets
+                return focusabletargets;
             }
 
             if (arr.length === 0) return focusabletargets; // if this filter does not find elements return the elements from the previous filter.
@@ -491,31 +475,28 @@
         // ----------------------------------------------------------------------------------
 
         function fliter_3_1(focusabletargets, focusedEl, direction) {
-
             var arr = [];
 
             if (focusabletargets.length > 1) {
-
                 for (var i = 0; i < focusabletargets.length; i++) {
-
-                    if (direction === 'UP' || direction === 'DOWN') { // Vertical filter
+                    if (direction === 'UP' || direction === 'DOWN') {
+                        // Vertical filter
 
                         if (focusabletargets[i].x2 > focusedEl.x1 && focusabletargets[i].x1 < focusedEl.x2) {
                             arr.push(focusabletargets[i]);
                         }
                     }
 
-                    if (direction === 'RIGHT' || direction === 'LEFT') { // Horizontal filter
+                    if (direction === 'RIGHT' || direction === 'LEFT') {
+                        // Horizontal filter
 
                         if (focusabletargets[i].y2 > focusedEl.y1 && focusabletargets[i].y1 < focusedEl.y2) {
                             arr.push(focusabletargets[i]);
                         }
                     }
                 }
-
             } else {
-
-                return focusabletargets
+                return focusabletargets;
             }
 
             if (arr.length === 0) return focusabletargets; // if this filter does not find elements return the elements from the previous filter.
@@ -535,12 +516,10 @@
         // -----------------------------------------
 
         function fliter_4(focusabletargets) {
-
             var el = null;
             var min = null;
 
             if (focusabletargets.length > 1) {
-
                 for (var i = 0; i < focusabletargets.length; i++) {
                     if (i === 0) {
                         el = focusabletargets[0];
@@ -553,15 +532,12 @@
                     }
                 }
 
-                return el
-
+                return el;
             } else if (focusabletargets.length === 1) {
-
-                return focusabletargets[0]
-
+                return focusabletargets[0];
             }
 
-            return -1
+            return -1;
         }
 
         tempTargets = fliter_4(tempTargets, nav.current, direction);
@@ -582,7 +558,6 @@
 
         // ... var rnd = Math.floor(Math.random() * nav.listOfFocusableElements.length ) + 0;
 
-
         //console.log(".c After filter 2, decision was taken: ", selectedObj);
 
         decisionIndex = tempTargets ? tempTargets.id : null;
@@ -590,14 +565,13 @@
         return decisionIndex; // Returns an element
     }
 
-    var doAction = function() {
-        console.log("Default action!");
+    var doAction = function () {
+        console.log('Default action!');
 
         //look for href
     };
 
-    var focusById = function(targetID) {
-
+    var focusById = function (targetID) {
         refreshListOfFocusableItems();
         removeFocusedClassFromAllElements();
         var num = null;
@@ -613,13 +587,13 @@
 
     window.nav = {
         current: {
-            el: null,
+            el: null
         },
-        init: function() {
+        init: function () {
             //checkInit();
             //calculateAllDistances();
         },
-        reset: function() {
+        reset: function () {
             this.current.el = null;
             checkInit();
             calculateAllDistances();
@@ -633,7 +607,7 @@
         listOfFocusableElements: [],
         focusableTargets: [],
         getFocusableGroupName: null,
-        actionFunction: function(e) {
+        actionFunction: function (e) {
             console.log(e);
 
             if (e.att_href != null) {
@@ -641,17 +615,15 @@
             }
 
             if (e.att_f_link != null) {
-
                 window.location = e.att_f_link;
             }
 
             if (e.att_f_func != null) {
-
                 eval(e.att_f_func);
             }
         },
         move: {
-            up: function() {
+            up: function () {
                 //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
@@ -660,7 +632,7 @@
                 //this.afterMove();
                 return nav.current.el;
             },
-            down: function() {
+            down: function () {
                 //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
@@ -669,7 +641,7 @@
                 //this.afterMove();
                 return nav.current.el;
             },
-            right: function() {
+            right: function () {
                 //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
@@ -678,7 +650,7 @@
                 //this.afterMove();
                 return nav.current.el;
             },
-            left: function() {
+            left: function () {
                 //this.beforeMove();
                 checkInit();
                 calculateAllDistances();
@@ -687,33 +659,31 @@
                 //this.afterMove();
                 return nav.current.el;
             },
-            rnd: function() {
-
-            },
-            to: function() { // id or class
-
+            rnd: function () {},
+            to: function () {
+                // id or class
             }
         },
-        groupBy: function(groupName){
+        groupBy: function (groupName) {
             this.curretGroup = groupName;
         },
-        ungroup: function() {
+        ungroup: function () {
             this.curretGroup = null;
         },
-        action: function() {
-            console.log("this.current: ", this.current);
-            var att_href = this.current.el.getAttribute("href");
-            var att_f_link = this.current.el.getAttribute("data-focus-action-link");
-            var att_f_func = this.current.el.getAttribute("data-focus-action-function");
-            console.log("att_href: ", att_href);
-            console.log("att_f_link: ", att_f_link);
-            console.log("att_f_func: ", att_f_func);
+        action: function () {
+            console.log('this.current: ', this.current);
+            var att_href = this.current.el.getAttribute('href');
+            var att_f_link = this.current.el.getAttribute('data-focus-action-link');
+            var att_f_func = this.current.el.getAttribute('data-focus-action-function');
+            console.log('att_href: ', att_href);
+            console.log('att_f_link: ', att_f_link);
+            console.log('att_f_func: ', att_f_func);
             var e = {
-                "el": this.current,
-                "att_href": att_href,
-                "att_f_link": att_f_link,
-                "att_f_func": att_f_func
-            }
+                el: this.current,
+                att_href: att_href,
+                att_f_link: att_f_link,
+                att_f_func: att_f_func
+            };
             this.actionFunction(e);
         },
         // recalculateContainers: function() {
@@ -722,12 +692,11 @@
         // applyRandomDecision: function() {
         //     console.log("applyRandomDecision()");
         // },
-        getNextElement: function(arrOfElements, currentElement, movDirection, filterNameOrID) {
-
-            console.log("getNextElement(), arrOfElements:", arrOfElements);
-            console.log("getNextElement(), currentElement:", currentElement);
-            console.log("getNextElement(), movDirection:", movDirection);
-            console.log("getNextElement(), filterNameOrID:", filterNameOrID);
+        getNextElement: function (arrOfElements, currentElement, movDirection, filterNameOrID) {
+            console.log('getNextElement(), arrOfElements:', arrOfElements);
+            console.log('getNextElement(), currentElement:', currentElement);
+            console.log('getNextElement(), movDirection:', movDirection);
+            console.log('getNextElement(), filterNameOrID:', filterNameOrID);
 
             if (arrOfElements === null) return undefined;
             if (currentElement === undefined || currentElement === null) {
@@ -737,16 +706,16 @@
 
             //currentElement = arrOfElements[0]; //undefined; //nav.applyFilters( arrOfElements, 'EXCLUDE-CURRENT', ["RANDOM"])
             //return undefined; //nav.filter( arrOfElements, ["RANDOM"])
-            if (filterNameOrID === null) filterNameOrID = "RANDOM";
-            if (movDirection === null) filterNameOrID = "RANDOM";
+            if (filterNameOrID === null) filterNameOrID = 'RANDOM';
+            if (movDirection === null) filterNameOrID = 'RANDOM';
 
             return automaticallyGetNextElement(arrOfElements, currentElement, movDirection, filterNameOrID);
         },
-        applySelectionStyle: function(domElement) {
+        applySelectionStyle: function (domElement) {
             if (domElement === undefined || domElement === null) return -1;
-            if (nav.current.el != null) Utils.removeClass(nav.current.el, "focused");
+            if (nav.current.el != null) Utils.removeClass(nav.current.el, 'focused');
             nav.current.el = domElement;
-            Utils.addClass(nav.current.el, "focused");
+            Utils.addClass(nav.current.el, 'focused');
         },
         focusById: focusById,
         // focus: {
@@ -755,9 +724,8 @@
         //     topLeft: focusArea
         // },
         focusArea: focusArea, // nav.focusArea('zone-1')
-        map:{
-            draw: function(){
-
+        map: {
+            draw: function () {
                 var arr = nav.focusableTargets, //nav.listOfFocusableElements,
                     lon = arr.length,
                     i = 0,
@@ -765,37 +733,27 @@
                     str = '',
                     scale = 0.3;
 
-                if (el === null){
+                if (el === null) {
                     el = document.createElement('div');
                     el.id = 'map-el';
-                    el.style.cssText = ''+
-                        'position:absolute;'+
-                        'top:0;left:0;'+
-                        'width:100%;'+
-                        'height:100%;'+
-                        'opacity:1;'+
-                        'z-index:1000;'+
-                        'background:red;'+
-                        'transform: scale('+ scale +');'+
-                        'transform-origin: 0 0;';
+                    el.style.cssText = '' + 'position:absolute;' + 'top:0;left:0;' + 'width:100%;' + 'height:100%;' + 'opacity:1;' + 'z-index:1000;' + 'background:red;' + 'transform: scale(' + scale + ');' + 'transform-origin: 0 0;';
 
                     document.body.appendChild(el);
                 }
 
-                for (i; i < lon; i++){
+                for (i; i < lon; i++) {
                     console.log(arr[i]);
                     var d = arr[i];
-                    str += '<div style="position:absolute; top:'+ d.y1 +'px;left:'+ d.x1 +'px; width:'+ d.w +'px;height:'+ d.h +'px; background-color: cyan; outline: 1px solid blue;">'+ i +'</div>'
+                    str += '<div style="position:absolute; top:' + d.y1 + 'px;left:' + d.x1 + 'px; width:' + d.w + 'px;height:' + d.h + 'px; background-color: cyan; outline: 1px solid blue;">' + i + '</div>';
                 }
 
                 el.innerHTML = str;
             },
-            clear: function(){
+            clear: function () {
                 var el = document.getElementById('map-el');
-                if ( el === null) return
+                if (el === null) return;
                 document.body.removeChild(el);
             }
         }
-
     };
-}());
+})();
