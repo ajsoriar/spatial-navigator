@@ -1,16 +1,16 @@
 'use strict';
 
-module.exports = function(grunt) {
-
-    var getDate = ( timestamp ) => {
-        var dt = null, str;
+module.exports = function (grunt) {
+    var getDate = (timestamp) => {
+        var dt = null,
+            str;
         if (!timestamp) timestamp = Date.now();
         dt = new Date(timestamp);
-        str = dt.getFullYear() + "-";
-        if (dt.getMonth() < 9) str += "0";
-        str += (dt.getMonth() + 1);
-        str += "-";
-        if(dt.getDate() < 10) str += "0";
+        str = dt.getFullYear() + '-';
+        if (dt.getMonth() < 9) str += '0';
+        str += dt.getMonth() + 1;
+        str += '-';
+        if (dt.getDate() < 10) str += '0';
         str += dt.getDate();
         return str;
     };
@@ -24,15 +24,17 @@ module.exports = function(grunt) {
         },
         copy: {
             build: {
-                files: [{
-                    cwd: 'src',
-                    src: [
-                        //'*.js',
-                        'spatial-navigator.js'
-                    ],
-                    dest: 'dist',
-                    expand: true
-                }]
+                files: [
+                    {
+                        cwd: 'src',
+                        src: [
+                            //'*.js',
+                            'spatial-navigator.js'
+                        ],
+                        dest: 'dist',
+                        expand: true
+                    }
+                ]
             }
         },
         uglify: {
@@ -47,7 +49,7 @@ module.exports = function(grunt) {
                 files: {
                     'dist/spatial-navigator.min.js': ['dist/spatial-navigator.js']
                 }
-            },
+            }
         },
         remove_comments: {
             js: {
@@ -64,9 +66,9 @@ module.exports = function(grunt) {
         },
         concat: {
             dist: {
-              src: ['src/header.txt', 'dist/spatial-navigator.js'],
-              dest: 'dist/spatial-navigator.js',
-            },
+                src: ['src/header.txt', 'dist/spatial-navigator.js'],
+                dest: 'dist/spatial-navigator.js'
+            }
         },
         replace: {
             header: {
@@ -74,8 +76,8 @@ module.exports = function(grunt) {
                     patterns: [
                         {
                             json: {
-                                "version-number": '<%= pkg.version %>',
-                                "version-date": getDate( Date.now() ),
+                                'version-number': '<%= pkg.version %>',
+                                'version-date': getDate(Date.now())
                             }
                         }
                     ]
@@ -87,8 +89,7 @@ module.exports = function(grunt) {
                     }
                 ]
             }
-        },
-
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -98,10 +99,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-replace');
 
-    grunt.registerTask( 
-        'build',
-        'Compiles all of the assets and files to dist directory.',
-        ['clean', 'copy', 'remove_comments:js', 'concat', 'replace:header', 'uglify' ]
-    );
-
+    grunt.registerTask('build', 'Compiles all of the assets and files to dist directory.', ['clean', 'copy', 'remove_comments:js', 'concat', 'replace:header', 'uglify']);
 };
